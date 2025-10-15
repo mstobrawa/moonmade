@@ -17,7 +17,9 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${montserrat.variable} antialiased font-playfair bg-moon-cream text-moon-rose-dark tracking-wider`}
       >
+        {/* Tutaj możemy wstawić Header globalny, np. <Header /> */}
         {children}
+        {/* Tutaj Footer */}
       </body>
     </html>
   );
