@@ -7,4 +7,7 @@
   --color-moon-rose-dark: #8a6e6c;
   --color-moon-rose-light: #dcc0bd;
   --color-moon-contrast: #2f2a28;
+
+  --font-playfair: var(--font-playfair);
+  --font-montserrat: var(--font-montserrat);
 }
