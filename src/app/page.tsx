@@ -1,9 +1,11 @@
 import { Button } from "./ui/Button";
 import ProductCard from "./ui/ProductCard";
+import Logo from "./Logo";
 
 export default function Home() {
   return (
     <main>
+      <Logo />
       <h1 className="text-3xl underline">Hello world!</h1>
       <Button className="text-2xl">Testowy button</Button>
       <ProductCard
