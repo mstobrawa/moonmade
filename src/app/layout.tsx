@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { playfair, montserrat } from "@/app/ui/fonts";
+import Header from "./ui/Header";
+import SubHeader from "./ui/SubHeader";
 
 export const metadata: Metadata = {
   title: "Moonmade.pl - Z miłości do kamieni",
@@ -17,7 +19,8 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${montserrat.variable} antialiased font-playfair bg-moon-cream text-moon-rose-dark tracking-wider`}
       >
-        {/* Tutaj możemy wstawić Header globalny, np. <Header /> */}
+        <Header />
+        <SubHeader />
         {children}
         {/* Tutaj Footer */}
       </body>
