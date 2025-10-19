@@ -2,7 +2,7 @@
 
 export default function SubHeader() {
   return (
-    <div className="w-full bg-moon-contrast py-3 shadow-sm">
+    <div className="w-full bg-moon-contrast py-3 shadow-sm tracking-widest">
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-evenly">
         {/* Lewa sekcja (widoczna tylko na desktopie) */}
         <div className="hidden sm:flex justify-between flex-1 text-moon-cream text-sm font-light">

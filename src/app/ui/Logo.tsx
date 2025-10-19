@@ -5,7 +5,7 @@ interface LogoProps {
   className?: string;
 }
 
-export default function Logo({ size = 160, className = "" }: LogoProps) {
+export default function Logo({ size = 100, className = "" }: LogoProps) {
   return (
     <div
       className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 ${className}`}
@@ -20,7 +20,7 @@ export default function Logo({ size = 160, className = "" }: LogoProps) {
         width={size}
         height={size}
         priority
-        className="order-1 sm:order-2 w-20 sm:w-40 h-auto"
+        className="order-1 sm:order-2 w-20 sm:w-24 h-auto"
       />
 
       <span className="order-3 text-3xl sm:text-5xl text-center">MADE</span>
