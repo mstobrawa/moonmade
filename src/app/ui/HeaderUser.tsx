@@ -1,40 +1,57 @@
 "use client";
 
-import React, { useState } from "react";
-import { ShoppingCart, LogIn, LogOut, UserPlus } from "lucide-react";
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ShoppingCart } from "lucide-react";
 
-export default function HeaderUser() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+interface HeaderUserProps {
+  isLoggedIn: boolean;
+}
 
-  const handleAuthClick = () => setIsLoggedIn((prev) => !prev);
+export default function HeaderUser({ isLoggedIn }: HeaderUserProps) {
+  const pathname = usePathname();
+
+  const isCartActive = pathname === "/cart";
+  const isAccountActive = pathname === "/signinup" || pathname === "/login";
+
+  const linkClass =
+    "relative px-2 pb-1 text-moon-contrast cursor-pointer transition-colors " +
+    "after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] " +
+    "after:bg-moon-rose after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100";
+
+  const activeClass = "after:scale-x-100";
 
   return (
-    <div className="flex items-center gap-3 sm:gap-4">
+    <div className="flex items-end gap-6">
       {/* Koszyk */}
-      <button className="relative">
-        <ShoppingCart className="w-6 h-6 text-moon-contrast hover:text-moon-rose-dark transition" />
-        <span className="absolute -top-2 -right-2 bg-moon-rose text-moon-cream text-xs font-semibold rounded-full px-1.5">
-          2
-        </span>
-      </button>
+      <Link
+        href="/cart"
+        className={`${linkClass} ${isCartActive ? activeClass : ""}`}
+      >
+        <ShoppingCart size={24} />
+      </Link>
 
-      {/* Logowanie / Rejestracja */}
+      {/* Logowanie / Rejestracja lub Konto */}
       {!isLoggedIn ? (
-        <div className="flex gap-2 sm:gap-3">
-          <button className="flex items-center gap-1 text-moon-contrast hover:text-moon-rose-dark transition">
-            <LogIn className="w-5 h-5" /> Zaloguj
-          </button>
-          <button className="flex items-center gap-1 text-moon-contrast hover:text-moon-rose-dark transition">
-            <UserPlus className="w-5 h-5" /> Zarejestruj
-          </button>
-        </div>
-      ) : (
-        <button
-          onClick={handleAuthClick}
-          className="flex items-center gap-1 text-moon-contrast hover:text-moon-rose-dark transition"
+        <Link
+          href="/signinup"
+          className={`${linkClass} ${isAccountActive ? activeClass : ""}`}
         >
-          <LogOut className="w-5 h-5" /> Wyloguj
-        </button>
+          <div className="flex flex-col items-center text-sm leading-tight">
+            <span>Logowanie</span>
+            <span>Rejestracja</span>
+          </div>
+        </Link>
+      ) : (
+        <Link
+          href="/account"
+          className={`${linkClass} ${
+            isAccountActive ? activeClass : ""
+          } text-sm`}
+        >
+          Konto
+        </Link>
       )}
     </div>
   );

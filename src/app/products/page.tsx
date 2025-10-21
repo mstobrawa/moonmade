@@ -3,25 +3,25 @@ import ProductsGrid from "../ui/ProductsGrid";
 const products = [
   {
     id: 1,
-    title: "Bransoletka Moonmade",
+    title: "Naszyjnik Moonmade",
     description: "Ręcznie robiona",
     price: "120 zł",
-    imgSrc: "https://via.placeholder.com/300x200",
+    imgSrc: "/Slide1.webp",
   },
   {
     id: 2,
     title: "Naszyjnik Moonmade",
     description: "Elegancki design",
     price: "150 zł",
-    imgSrc: "https://via.placeholder.com/300x200",
+    imgSrc: "/Slide2.webp",
   },
   {
     id: 3,
-    title: "Bransoletka Moonmade",
+    title: "Naszyjnik Moonmade",
     description: "Ręcznie robiona",
     price: "120 zł",
-    imgSrc: "https://via.placeholder.com/300x200",
-  },
+    imgSrc: "/Slide3.webp",
+  } /*
   {
     id: 4,
     title: "Naszyjnik Moonmade",
@@ -70,7 +70,7 @@ const products = [
     description: "Elegancki design",
     price: "150 zł",
     imgSrc: "https://via.placeholder.com/300x200",
-  },
+  },*/,
 
   // kolejne produkty
 ];
