@@ -1,11 +1,44 @@
 "use client";
 
 import React from "react";
+import FooterColumn from "./FooterColumn";
+import FooterBottom from "./FooterBottom";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-moon-contrast text-moon-cream py-8">
-      <div className="container mx-auto px-4 text-center">TEST</div>
+    <footer className="bg-moon-contrast text-moon-cream py-10 mt-auto">
+      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+        <FooterColumn
+          title="Informacje"
+          links={[
+            { label: "Regulamin", href: "/regulamin" },
+            { label: "Polityka prywatności", href: "/polityka-prywatnosci" },
+            { label: "Pliki cookies", href: "/cookies" },
+          ]}
+        />
+        <FooterColumn
+          title="Obsługa klienta"
+          links={[
+            { label: "Reklamacja/Zwroty", href: "/reklamacja" },
+            { label: "Dostawa", href: "/dostawa" },
+            { label: "Płatności", href: "/platnosci" },
+          ]}
+        />
+        <FooterColumn
+          title="Kontakt"
+          links={[
+            {
+              label: "kontakt@moonmade.pl",
+              href: "mailto:kontakt@moonmade.pl",
+            },
+            {
+              label: "Instagram",
+              href: "https://www.instagram.com/moonmade.pl",
+            },
+          ]}
+        />
+      </div>
+      <FooterBottom />
     </footer>
   );
 }
