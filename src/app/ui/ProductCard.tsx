@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "./Button";
+import Button from "./Button";
 
 interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
