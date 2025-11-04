@@ -1,9 +1,11 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
+import Link from "next/link";
+import { useCart } from "@/app/(store)/cart/CartContext";
+import Badge from "./Badge";
 
 interface HeaderUserProps {
   isLoggedIn: boolean;
@@ -11,32 +13,48 @@ interface HeaderUserProps {
 
 export default function HeaderUser({ isLoggedIn }: HeaderUserProps) {
   const pathname = usePathname();
+  const { state, isHydrated } = useCart();
 
   const isCartActive = pathname === "/cart";
   const isAccountActive = pathname === "/signinup" || pathname === "/login";
 
-  const linkClass =
-    "relative px-2 pb-1 text-moon-contrast cursor-pointer transition-colors " +
-    "after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] " +
-    "after:bg-moon-rose after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100";
+  // klasa odpowiadająca tylko za efekt hover (underline)
+  const hoverUnderline =
+    "relative after:absolute after:left-1/2 after:-bottom-1 after:w-0 after:h-[2px] after:bg-moon-rose after:transition-all after:duration-300 after:-translate-x-1/2 hover:after:w-full";
 
-  const activeClass = "after:scale-x-100";
+  const totalQty = isHydrated
+    ? state.items.reduce((sum, item) => sum + item.qty, 0)
+    : 0;
 
   return (
     <div className="flex items-end gap-6">
-      {/* Koszyk */}
+      {/* 🛒 Koszyk */}
       <Link
         href="/cart"
-        className={`${linkClass} ${isCartActive ? activeClass : ""}`}
+        className={`text-moon-contrast ${hoverUnderline} ${
+          isCartActive ? "after:w-full" : ""
+        }`}
       >
-        <ShoppingCart size={24} />
+        <span className="relative inline-flex items-center justify-center">
+          <ShoppingCart size={24} />
+          {isHydrated && totalQty > 0 && (
+            <Badge
+              variant="rose"
+              className="absolute -top-2 -right-2 shadow-md"
+            >
+              {totalQty}
+            </Badge>
+          )}
+        </span>
       </Link>
 
-      {/* Logowanie / Rejestracja lub Konto */}
+      {/* 👤 Logowanie / Konto */}
       {!isLoggedIn ? (
         <Link
           href="/signinup"
-          className={`${linkClass} ${isAccountActive ? activeClass : ""}`}
+          className={`text-moon-contrast ${hoverUnderline} ${
+            isAccountActive ? "after:w-full" : ""
+          }`}
         >
           <div className="flex flex-col items-center text-sm leading-tight">
             <span>Logowanie</span>
@@ -46,8 +64,8 @@ export default function HeaderUser({ isLoggedIn }: HeaderUserProps) {
       ) : (
         <Link
           href="/account"
-          className={`${linkClass} ${
-            isAccountActive ? activeClass : ""
+          className={`text-moon-contrast ${hoverUnderline} ${
+            isAccountActive ? "after:w-full" : ""
           } text-sm`}
         >
           Konto

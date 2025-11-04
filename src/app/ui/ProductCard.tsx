@@ -1,7 +1,9 @@
 "use client";
 import Button from "./Button";
+import Link from "next/link";
 
 interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  slug: string;
   title: string;
   description: string;
   price: string;
@@ -9,6 +11,7 @@ interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default function ProductCard({
+  slug,
   title,
   description,
   price,
@@ -29,9 +32,9 @@ export default function ProductCard({
       <h3 className="text-lg mb-2">{title}</h3>
       <h2 className="text-md mb-1.5">{description}</h2>
       <p className="">{price}</p>
-      <Button onClick={() => alert(`Dodano ${title} do koszyka`)}>
-        Do koszyka
-      </Button>
+      <Link href={`/products/${slug}`} className="inline-block">
+        <Button> Szczegóły </Button>
+      </Link>
     </div>
   );
 }

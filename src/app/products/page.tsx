@@ -7,6 +7,7 @@ const products = [
     description: "Ręcznie robiona",
     price: "120 zł",
     imgSrc: "/Slide1.webp",
+    slug: "Naszyjnik_Moonmade",
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ const products = [
     description: "Elegancki design",
     price: "150 zł",
     imgSrc: "/Slide2.webp",
+    slug: "Naszyjnik_Moonmade",
   },
   {
     id: 3,
@@ -21,6 +23,7 @@ const products = [
     description: "Ręcznie robiona",
     price: "120 zł",
     imgSrc: "/Slide3.webp",
+    slug: "Naszyjnik_Moonmade",
   } /*
   {
     id: 4,
