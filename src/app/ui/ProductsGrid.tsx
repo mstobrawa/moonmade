@@ -1,28 +1,15 @@
 import ProductCard from "./ProductCard";
+import { Product } from "@/data/products";
 
 interface ProductsGridProps {
-  products: {
-    id: number;
-    title: string;
-    description: string;
-    price: string;
-    imgSrc: string;
-    slug: string;
-  }[];
+  products: Product[];
 }
+
 export default function ProductsGrid({ products }: ProductsGridProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {products.map((product) => (
-        <ProductCard
-          className="hover:scale-105 transition"
-          key={product.id}
-          title={product.title}
-          description={product.description}
-          price={product.price}
-          imgSrc={product.imgSrc}
-          slug={product.slug}
-        />
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {products.map((p) => (
+        <ProductCard key={p.id} product={p} />
       ))}
     </div>
   );
