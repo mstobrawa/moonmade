@@ -1,32 +1,34 @@
-"use client";
-import { useCart } from "@/app/(store)/cart/CartContext";
-import React from "react";
+export const metadata = {
+  title: "Kontakt | Moonmade",
+  description: "Skontaktuj się z nami – Moonmade",
+};
 
 export default function ContactPage() {
-  const { state, dispatch, isHydrated } = useCart();
-
-  if (!isHydrated) return null; // 🧠 poczekaj aż się załaduje z localStorage
-
-  const totalQty = state.items.reduce((s, i) => s + i.qty, 0);
-
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center gap-4">
-      <button
-        type="button"
-        onClick={() =>
-          dispatch({
-            type: "ADD_ITEM",
-            payload: { id: "p1", title: "Test", price: 1999, qty: 1 },
-          })
-        }
-        className="px-4 py-2 bg-moon-rose text-moon-white rounded-lg hover:bg-moon-rose-dark transition"
-      >
-        + test do koszyka
-      </button>
+    <main className="min-h-screen bg-moon-cream text-moon-contrast px-6 py-16 flex items-center justify-center">
+      <div className="w-full max-w-xl bg-moon-white rounded-2xl shadow-md p-8 text-center space-y-6">
+        <h1 className="text-3xl font-bold">Kontakt</h1>
 
-      <span className="text-lg text-moon-contrast">
-        Produkty w koszyku: {totalQty}
-      </span>
-    </div>
+        <p className="text-lg">
+          Masz pytania dotyczące biżuterii, dostępności unikatów lub zamówień
+          indywidualnych?
+        </p>
+
+        <p className="text-lg">
+          Napisz do nas:
+          <br />
+          <a
+            href="mailto:kontakt@moonmade.pl"
+            className="font-semibold text-moon-rose hover:underline"
+          >
+            kontakt@moonmade.pl
+          </a>
+        </p>
+
+        <p className="text-sm text-moon-rose-dark">
+          Odpowiadamy zazwyczaj w ciągu 24 godzin 🌙
+        </p>
+      </div>
+    </main>
   );
 }
