@@ -39,11 +39,24 @@ export default function Button({
     lg: "px-6 py-3 text-lg",
   };
 
-  const allClasses = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
+  // 🔑 Wykrywamy disabled z propsów
+  const isDisabled = props.disabled;
+
+  const disabledStyles = isDisabled
+    ? "opacity-50 cursor-not-allowed pointer-events-none"
+    : "";
+
+  const allClasses = `
+    ${baseStyles}
+    ${variants[variant]}
+    ${sizes[size]}
+    ${disabledStyles}
+    ${className}
+  `;
 
   if (as === "a" && href) {
     return (
-      <Link href={href} className={allClasses}>
+      <Link href={href} className={allClasses} aria-disabled={isDisabled}>
         {children}
       </Link>
     );

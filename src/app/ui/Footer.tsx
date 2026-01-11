@@ -11,16 +11,15 @@ export default function Footer() {
         <FooterColumn
           title="Informacje"
           links={[
-            { label: "Regulamin", href: "/regulamin" },
+            { label: "Regulamin", href: "/statute" },
             { label: "Polityka prywatności", href: "/polityka-prywatnosci" },
-            { label: "Pliki cookies", href: "/cookies" },
           ]}
         />
         <FooterColumn
           title="Obsługa klienta"
           links={[
-            { label: "Reklamacja/Zwroty", href: "/reklamacja" },
-            { label: "Dostawa", href: "/dostawa" },
+            { label: "Reklamacja/Zwroty", href: "/returns" },
+            { label: "Dostawa", href: "/delivery" },
             { label: "Płatności", href: "/platnosci" },
           ]}
         />

@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import { useParams, useRouter } from "next/navigation";
 import { products } from "@/data/products";
 import Image from "next/image";
@@ -9,14 +7,12 @@ import Button from "@/app/ui/Button";
 import { useCart } from "@/app/(store)/cart/CartContext";
 
 export default function ProductDetailsPage() {
-  const { slug } = useParams(); // pobieramy slug z URL
-  const { dispatch } = useCart(); // mamy dostęp do koszyka
-  const router = useRouter(); // do powrotu na listę produktów
+  const { slug } = useParams();
+  const { state, dispatch } = useCart();
+  const router = useRouter();
 
-  // szukamy produktu
   const product = products.find((p) => p.slug === slug);
 
-  // jeśli nie znaleziono
   if (!product) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-moon-cream text-moon-contrast">
@@ -25,14 +21,19 @@ export default function ProductDetailsPage() {
     );
   }
 
+  // 🔒 sprawdzamy czy produkt już w koszyku
+  const isInCart = state.items.some((i) => i.id === product.id);
+
   const handleAddToCart = () => {
+    if (isInCart) return;
+
     dispatch({
       type: "ADD_ITEM",
       payload: {
         id: product.id,
         title: product.title,
         price: product.price,
-        qty: 1,
+        image: product.images[0], // ✅ miniaturka do koszyka
       },
     });
   };
@@ -40,6 +41,7 @@ export default function ProductDetailsPage() {
   const handleGoBack = () => {
     router.push("/products");
   };
+
   return (
     <main className="min-h-screen bg-moon-cream text-moon-contrast flex flex-col items-center p-6">
       <div className="w-full max-w-3xl bg-moon-white rounded-2xl shadow-lg p-6 flex flex-col md:flex-row gap-6">
@@ -60,21 +62,28 @@ export default function ProductDetailsPage() {
           <p className="text-moon-rose-dark mb-4">{product.description}</p>
           <p className="text-xl font-semibold mb-4">{product.price} zł</p>
 
+          {/* info o unikatowości */}
+          <p className="text-sm text-moon-rose-dark mb-4">
+            Unikat – dostępna 1 sztuka
+          </p>
+
           {/* Przyciski akcji */}
           <div className="flex flex-col gap-4">
             <div className="flex gap-4 justify-center">
-              {/* Dodaj do koszyka */}
-              <Button variant="primary" size="md" onClick={handleAddToCart}>
-                Dodaj do koszyka
+              <Button
+                variant="primary"
+                size="md"
+                disabled={isInCart}
+                onClick={handleAddToCart}
+              >
+                {isInCart ? "Produkt w koszyku" : "Dodaj do koszyka"}
               </Button>
 
-              {/* Wróć do listy produktów */}
               <Button variant="primary" size="md" onClick={handleGoBack}>
                 Wróć do produktów
               </Button>
             </div>
 
-            {/* Przejdź do koszyka */}
             <div className="flex justify-center">
               <Button as="a" href="/cart" variant="primary" size="md">
                 Przejdź do koszyka

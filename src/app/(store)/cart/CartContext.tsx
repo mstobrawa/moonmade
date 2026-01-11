@@ -1,4 +1,5 @@
 "use client";
+
 import React, {
   createContext,
   useContext,
@@ -6,7 +7,16 @@ import React, {
   useReducer,
   useState,
 } from "react";
-import type { CartState, CartAction, CartItem } from "./cart-types";
+import type { CartItem } from "./cart-types";
+
+type CartState = {
+  items: CartItem[];
+};
+
+type CartAction =
+  | { type: "ADD_ITEM"; payload: CartItem }
+  | { type: "REMOVE_ITEM"; payload: { id: string } }
+  | { type: "CLEAR" };
 
 const CartCtx = createContext<{
   state: CartState;
@@ -18,66 +28,17 @@ const initial: CartState = { items: [] };
 
 function reducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
-    // ADD_ITEM: jeśli item istnieje -> zwiększ qty (domyślnie o 1)
-    // jeśli nie istnieje -> dodaj z qty (domyślnie 1)
     case "ADD_ITEM": {
-      const payload = action.payload as CartItem;
-      const addQty = typeof payload.qty === "number" ? payload.qty : 1;
-
-      const exists = state.items.find((i) => i.id === payload.id);
-      if (exists) {
-        return {
-          ...state,
-          items: state.items.map((i) =>
-            i.id === exists.id ? { ...i, qty: i.qty + addQty } : i
-          ),
-        };
-      }
-
-      return { ...state, items: [...state.items, { ...payload, qty: addQty }] };
+      const exists = state.items.some((i) => i.id === action.payload.id);
+      if (exists) return state; // 🛑 unikat już w koszyku
+      return { ...state, items: [...state.items, action.payload] };
     }
 
-    // REMOVE_ITEM: jeśli qty > removeQty -> zmniejsz
-    // jeśli qty <= removeQty (np. removeQty === 1 i qty === 1) -> usuń produkt
-    case "REMOVE_ITEM": {
-      const payload = action.payload as { id: string; qty?: number };
-      const removeQty = typeof payload.qty === "number" ? payload.qty : 1;
-
-      const exists = state.items.find((i) => i.id === payload.id);
-      if (!exists) return state;
-
-      if (exists.qty > removeQty) {
-        return {
-          ...state,
-          items: state.items.map((i) =>
-            i.id === payload.id ? { ...i, qty: i.qty - removeQty } : i
-          ),
-        };
-      }
-
-      // usuń jeśli qty <= removeQty
+    case "REMOVE_ITEM":
       return {
         ...state,
-        items: state.items.filter((i) => i.id !== payload.id),
+        items: state.items.filter((i) => i.id !== action.payload.id),
       };
-    }
-
-    // SET_QTY: ustaw dokładną ilość; jeśli <= 0 -> usuń
-    case "SET_QTY": {
-      const payload = action.payload as { id: string; qty: number };
-      if (payload.qty <= 0) {
-        return {
-          ...state,
-          items: state.items.filter((i) => i.id !== payload.id),
-        };
-      }
-      return {
-        ...state,
-        items: state.items.map((i) =>
-          i.id === payload.id ? { ...i, qty: payload.qty } : i
-        ),
-      };
-    }
 
     case "CLEAR":
       return { items: [] };
@@ -96,9 +57,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const raw = localStorage.getItem("cart");
       if (raw) {
         const parsed = JSON.parse(raw) as CartState;
-        // zamień na pojedyncze dispatchy żeby zachować logikę reducera
-        dispatch({ type: "CLEAR" });
-        parsed.items.forEach((item: CartItem) =>
+        parsed.items.forEach((item) =>
           dispatch({ type: "ADD_ITEM", payload: item })
         );
       }
@@ -109,14 +68,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // zapisujemy tylko po hydratacji (żeby uniknąć nadpisania SSR)
   useEffect(() => {
     if (isHydrated) {
-      try {
-        localStorage.setItem("cart", JSON.stringify(state));
-      } catch (e) {
-        console.warn("Nie udało się zapisać koszyka:", e);
-      }
+      localStorage.setItem("cart", JSON.stringify(state));
     }
   }, [state, isHydrated]);
 
