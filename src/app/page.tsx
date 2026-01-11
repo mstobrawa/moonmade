@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 
 export default function HeroSection() {
   return (
@@ -26,13 +27,13 @@ export default function HeroSection() {
         kolekcjach.
       </p>
 
-      {/* CTA button w środku */}
-      <a
+      {/* CTA button */}
+      <Link
         href="/products"
         className="bg-moon-rose text-moon-cream font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-moon-rose-dark transition-colors mb-6"
       >
         Zobacz kolekcję
-      </a>
+      </Link>
 
       {/* Trzeci akapit */}
       <p className="text-lg sm:text-xl max-w-3xl">
