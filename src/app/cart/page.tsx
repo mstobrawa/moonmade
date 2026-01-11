@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { useCart } from "@/app/(store)/cart/CartContext";
 import Button from "../ui/Button";
 
@@ -21,9 +23,10 @@ export default function CartPage() {
         <h1 className="text-2xl text-moon-contrast font-semibold">
           Twój koszyk jest pusty 🛒
         </h1>
-        <Button as="a" href="/products">
-          Przejdź do produktów
-        </Button>
+
+        <Link href="/products">
+          <Button>Przejdź do produktów</Button>
+        </Link>
       </main>
     );
   }
@@ -41,11 +44,13 @@ export default function CartPage() {
               className="flex items-center gap-4 bg-moon-white p-4 rounded-xl shadow"
             >
               {/* miniaturka */}
-              <div className="w-20 h-20 rounded-lg overflow-hidden bg-moon-cream">
-                <img
-                  src={item.image}
+              <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-moon-cream">
+                <Image
+                  src={item.image ?? "/placeholder.webp"}
                   alt={item.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="80px"
                 />
               </div>
 
