@@ -20,7 +20,7 @@ export default function Footer() {
           links={[
             { label: "Reklamacja/Zwroty", href: "/returns" },
             { label: "Dostawa", href: "/delivery" },
-            { label: "Płatności", href: "/platnosci" },
+            { label: "Płatności", href: "/payment" },
           ]}
         />
         <FooterColumn
