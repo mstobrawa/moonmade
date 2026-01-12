@@ -5,7 +5,6 @@ export type Product = {
   price: number; // w groszach lub number w zł – jak wolisz, ale bądź spójny
   description: string;
   images: string[];
-  stock: number;
 };
 
 export const products: Product[] = [
@@ -16,7 +15,6 @@ export const products: Product[] = [
     price: 125,
     description: "Ręcznie robiony naszyjnik z kamieniem ametystu.",
     images: ["/images/ametyst-1.webp"],
-    stock: 12,
   },
   {
     id: "p2",
@@ -25,6 +23,5 @@ export const products: Product[] = [
     price: 185,
     description: "Subtelna bransoletka z labradorytem, robiona ręcznie.",
     images: ["/images/labradoryt-1.webp"],
-    stock: 8,
   },
 ];

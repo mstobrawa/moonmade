@@ -1,96 +1,49 @@
-"use client";
+export const dynamic = "force-dynamic";
 
-import { useParams, useRouter } from "next/navigation";
-import { products } from "@/data/products";
+import { notFound } from "next/navigation";
+import { supabaseServer as supabase } from "@/lib/supabase/server";
 import Image from "next/image";
 import Button from "@/app/ui/Button";
-import { useCart } from "@/app/(store)/cart/CartContext";
 
-export default function ProductDetailsPage() {
-  const { slug } = useParams();
-  const { state, dispatch } = useCart();
-  const router = useRouter();
+interface ProductPageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
 
-  const product = products.find((p) => p.slug === slug);
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = await params;
 
-  if (!product) {
-    return (
-      <main className="min-h-screen flex items-center justify-center bg-moon-cream text-moon-contrast">
-        <h1 className="text-2xl font-semibold">Nie znaleziono produktu 😢</h1>
-      </main>
-    );
+  const { data: product, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_available", true)
+    .single();
+
+  if (error || !product) {
+    notFound();
   }
 
-  // 🔒 sprawdzamy czy produkt już w koszyku
-  const isInCart = state.items.some((i) => i.id === product.id);
-
-  const handleAddToCart = () => {
-    if (isInCart) return;
-
-    dispatch({
-      type: "ADD_ITEM",
-      payload: {
-        id: product.id,
-        title: product.title,
-        price: product.price,
-        image: product.images[0], // ✅ miniaturka do koszyka
-      },
-    });
-  };
-
-  const handleGoBack = () => {
-    router.push("/products");
-  };
-
   return (
-    <main className="min-h-screen bg-moon-cream text-moon-contrast flex flex-col items-center p-6">
-      <div className="w-full max-w-3xl bg-moon-white rounded-2xl shadow-lg p-6 flex flex-col md:flex-row gap-6">
-        {/* obrazek */}
-        <div className="flex-1 flex items-center justify-center">
+    <main className="min-h-screen bg-moon-cream px-6 py-16">
+      <div className="max-w-3xl mx-auto bg-moon-white rounded-2xl shadow-md p-8 space-y-6">
+        <div className="relative w-full h-80 rounded-xl overflow-hidden">
           <Image
-            src={product.images[0]}
+            src={product.images?.[0] ?? "/placeholder.webp"}
             alt={product.title}
-            width={400}
-            height={400}
-            className="rounded-xl object-cover"
+            fill
+            className="object-cover"
           />
         </div>
 
-        {/* szczegóły */}
-        <div className="flex-1 flex flex-col justify-center">
-          <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
-          <p className="text-moon-rose-dark mb-4">{product.description}</p>
-          <p className="text-xl font-semibold mb-4">{product.price} zł</p>
+        <h1 className="text-3xl font-bold">{product.title}</h1>
 
-          {/* info o unikatowości */}
-          <p className="text-sm text-moon-rose-dark mb-4">
-            Unikat – dostępna 1 sztuka
-          </p>
+        <p className="text-lg text-moon-contrast">{product.description}</p>
 
-          {/* Przyciski akcji */}
-          <div className="flex flex-col gap-4">
-            <div className="flex gap-4 justify-center">
-              <Button
-                variant="primary"
-                size="md"
-                disabled={isInCart}
-                onClick={handleAddToCart}
-              >
-                {isInCart ? "Produkt w koszyku" : "Dodaj do koszyka"}
-              </Button>
+        <p className="text-2xl font-semibold">{product.price} zł</p>
 
-              <Button variant="primary" size="md" onClick={handleGoBack}>
-                Wróć do produktów
-              </Button>
-            </div>
-
-            <div className="flex justify-center">
-              <Button as="a" href="/cart" variant="primary" size="md">
-                Przejdź do koszyka
-              </Button>
-            </div>
-          </div>
-        </div>
+        <Button>Dodaj do koszyka</Button>
       </div>
     </main>
   );
