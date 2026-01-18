@@ -1,0 +1,39 @@
+"use client";
+
+import { useCart } from "@/app/(store)/cart/CartContext";
+import Button from "./Button";
+
+interface AddToCartButtonProps {
+  product: {
+    id: string;
+    title: string;
+    price: number;
+    image: string;
+  };
+}
+
+export default function AddToCartButton({ product }: AddToCartButtonProps) {
+  const { state, dispatch } = useCart();
+
+  const isInCart = state.items.some((item) => item.id === product.id);
+
+  const handleAddToCart = () => {
+    if (isInCart) return;
+
+    dispatch({
+      type: "ADD_ITEM",
+      payload: {
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        image: product.image,
+      },
+    });
+  };
+
+  return (
+    <Button onClick={handleAddToCart} disabled={isInCart} className="w-full">
+      {isInCart ? "Dodano do koszyka ✓" : "Dodaj do koszyka"}
+    </Button>
+  );
+}
