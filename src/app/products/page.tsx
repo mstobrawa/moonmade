@@ -1,7 +1,7 @@
 import ProductsGrid from "../ui/ProductsGrid";
-import { supabase } from "@/lib/supabase/client";
+import { supabaseServer as supabase } from "@/lib/supabase/server";
 
-export const revalidate = 60; // odświeżanie danych (ISR)
+export const revalidate = 60; // ISR – lista może się odświeżać
 
 export default async function ProductPage() {
   const { data: products, error } = await supabase

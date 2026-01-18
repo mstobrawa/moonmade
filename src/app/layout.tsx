@@ -5,6 +5,7 @@ import Header from "./ui/Header";
 import SubHeader from "./ui/SubHeader";
 import Footer from "./ui/Footer";
 import { CartProvider } from "./(store)/cart/CartContext";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Moonmade.pl - Z miłości do kamieni",
@@ -27,6 +28,10 @@ export default function RootLayout({
           <main className="flex-grow"> {children} </main>
           <Footer />
         </CartProvider>
+        <Script
+          src="https://geowidget.inpost.pl/inpost-geowidget.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
