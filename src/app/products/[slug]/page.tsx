@@ -2,12 +2,13 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 import { unstable_noStore as noStore } from "next/cache";
+import { notFound } from "next/navigation";
 import { supabaseServer as supabase } from "@/lib/supabase/server";
-import Image from "next/image";
-import Link from "next/link";
 
-import Button from "@/app/ui/Button";
+import ProductGallery from "./ProductGallery";
 import AddToCartButton from "@/app/ui/AddToCartButton";
+import Button from "@/app/ui/Button";
+import Link from "next/link";
 
 interface ProductPageProps {
   params: Promise<{
@@ -20,64 +21,45 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const { slug } = await params;
 
-  const { data: product } = await supabase
+  const { data: product, error } = await supabase
     .from("products")
     .select("*")
     .eq("slug", slug)
     .eq("is_available", true)
-    .maybeSingle();
+    .single();
 
-  // 🟠 BEZPIECZNY FALLBACK (bez notFound)
-  if (!product) {
-    return (
-      <main className="min-h-screen bg-moon-cream px-6 py-16 flex items-center justify-center">
-        <div className="bg-moon-white p-8 rounded-2xl shadow-md text-center max-w-md space-y-6">
-          <h1 className="text-2xl font-bold">Produkt niedostępny</h1>
-
-          <p className="text-moon-contrast">
-            Ten produkt nie jest obecnie dostępny lub został usunięty.
-          </p>
-
-          <Link href="/products">
-            <Button>Wróć do produktów</Button>
-          </Link>
-        </div>
-      </main>
-    );
+  if (error || !product) {
+    notFound();
   }
 
-  // 🟢 NORMALNY WIDOK PRODUKTU
   return (
     <main className="min-h-screen bg-moon-cream px-6 py-16">
-      <div className="max-w-4xl mx-auto bg-moon-white rounded-2xl shadow-md p-8 grid gap-8 md:grid-cols-2">
-        {/* 🖼️ Zdjęcie */}
-        <div className="relative w-full h-80 md:h-full rounded-xl overflow-hidden">
-          <Image
-            src={product.images?.[0] ?? "/placeholder.webp"}
-            alt={product.title}
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
+      <div className="max-w-5xl mx-auto bg-moon-white rounded-2xl shadow-md p-8 grid md:grid-cols-2 gap-10">
+        {/* =====================
+            GALERIA
+           ===================== */}
+        <ProductGallery images={product.images} title={product.title} />
 
-        {/* 📄 Dane produktu */}
-        <div className="flex flex-col justify-between gap-6">
-          <div className="space-y-4">
-            <h1 className="text-3xl font-bold">{product.title}</h1>
+        {/* =====================
+            INFORMACJE
+           ===================== */}
+        <div className="flex flex-col gap-6">
+          {/* Tytuł + opis */}
+          <div>
+            <h1 className="text-3xl font-bold text-moon-contrast mb-2">
+              {product.title}
+            </h1>
 
-            <p className="text-lg text-moon-contrast">{product.description}</p>
-
-            <p className="text-2xl font-semibold">{product.price} zł</p>
-
-            <p className="text-sm text-moon-rose-dark">
-              Unikat – dostępna 1 sztuka
+            <p className="text-lg text-moon-contrast leading-relaxed">
+              {product.description}
             </p>
           </div>
 
-          {/* 🛒 Akcje */}
-          <div className="space-y-4">
-            {/* Dodawanie do koszyka – BLOKUJE SIĘ */}
+          {/* Cena */}
+          <p className="text-2xl font-semibold">{product.price} zł</p>
+
+          {/* CTA */}
+          <div className="space-y-3">
             <AddToCartButton
               product={{
                 id: product.id,
@@ -87,17 +69,22 @@ export default async function ProductPage({ params }: ProductPageProps) {
               }}
             />
 
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/products" className="flex-1">
+            <div className="grid grid-cols-2 gap-3">
+              <Link href="/products">
                 <Button variant="outline" className="w-full">
-                  ← Wróć do produktów
+                  ← Wróć
                 </Button>
               </Link>
 
-              <Link href="/cart" className="flex-1">
-                <Button className="w-full">Przejdź do koszyka</Button>
+              <Link href="/cart">
+                <Button className="w-full">Koszyk</Button>
               </Link>
             </div>
+          </div>
+
+          {/* Info dodatkowe */}
+          <div className="pt-4 border-t text-sm text-moon-rose-dark">
+            Unikat – dostępna tylko 1 sztuka
           </div>
         </div>
       </div>
