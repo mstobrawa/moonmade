@@ -23,7 +23,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
   return (
     <div className="space-y-4">
       {/* GŁÓWNE ZDJĘCIE */}
-      <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-moon-cream">
+      <div className="relative w-full aspect-[4/5] md:aspect-square rounded-2xl overflow-hidden bg-moon-cream">
         <Image
           src={activeImage}
           alt={safeTitle}
