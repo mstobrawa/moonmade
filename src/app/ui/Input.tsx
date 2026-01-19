@@ -12,38 +12,64 @@ export default function Input({ label, className = "", ...props }: InputProps) {
   const [showPassword, setShowPassword] = React.useState(false);
 
   return (
-    <div className={`relative w-full ${className}`}>
-      {/* Pole input */}
+    // ⬇️ KLUCZ: wrapper MA TŁO
+    <div className={`relative w-full bg-moon-white ${className}`}>
+      {/* INPUT */}
       <input
         id={props.id || label}
         {...props}
         type={props.type === "password" && showPassword ? "text" : props.type}
         placeholder=" "
-        className={`peer w-full border-2 rounded-xl border-moon-contrast bg-transparent p-2 pr-10 
-                    text-moon-contrast focus:outline-none focus:border-moon-rose-dark 
-                    bg-autofill-moon-cream ${className}`}
+        className="
+          peer
+          w-full
+          border-2
+          rounded-xl
+          border-moon-contrast
+          bg-transparent
+          px-4
+          py-3
+          pr-10
+          text-moon-contrast
+          placeholder-transparent
+          focus:outline-none
+          focus:border-moon-rose-dark
+        "
       />
 
-      {/* Oczko — tylko dla pól password */}
+      {/* Oczko */}
       {props.type === "password" && (
         <button
           type="button"
           onClick={() => setShowPassword((prev) => !prev)}
-          className="absolute right-3 top-2 text-moon-rose-dark hover:text-moon-rose transition-colors"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-moon-rose-dark hover:text-moon-rose"
           tabIndex={-1}
         >
           {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
         </button>
       )}
 
-      {/* Label */}
+      {/* LABEL */}
       {label && (
         <label
           htmlFor={props.id || label}
-          className="absolute left-2 top-2 bg-moon-cream px-1 text-moon-rose-dark transition-all duration-200
-                     peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:text-moon-rose
-                     peer-focus:-top-3 peer-focus:text-sm peer-focus:text-moon-rose-dark
-                     peer-not-placeholder-shown:-top-3 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:text-moon-rose-dark"
+          className="
+            absolute
+            left-4
+            top-3
+            px-1
+            text-moon-rose-dark
+            bg-moon-white
+            transition-all
+            duration-200
+            pointer-events-none
+            peer-placeholder-shown:top-3
+            peer-placeholder-shown:text-base
+            peer-focus:-top-2
+            peer-focus:text-sm
+            peer-not-placeholder-shown:-top-2
+            peer-not-placeholder-shown:text-sm
+          "
         >
           {label}
         </label>

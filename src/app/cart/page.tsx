@@ -83,9 +83,9 @@ export default function CartPage() {
           <p className="text-lg mb-4">
             Razem: <span className="font-bold">{formatPrice(totalPrice)}</span>
           </p>
-
-          <Button className="w-full mb-3">Przejdź do kasy</Button>
-
+          <Link href="/checkout">
+            <Button className="w-full mb-3">Przejdź do kasy</Button>
+          </Link>
           <Button
             variant="outline"
             size="sm"
