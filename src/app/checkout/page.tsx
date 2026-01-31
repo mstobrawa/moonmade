@@ -17,6 +17,7 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<Step>("form");
   const [shippingMethod, setShippingMethod] =
     useState<ShippingMethod>("locker");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -86,13 +87,63 @@ export default function CheckoutPage() {
     setStep("summary");
   };
 
+  /* =====================
+     FINALNY SUBMIT → AUTOPAY
+     ===================== */
+  const handleCreateOrder = async () => {
+    try {
+      setIsSubmitting(true);
+
+      // 1️⃣ tworzenie zamówienia
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer: form,
+          shippingMethod,
+          shippingCost,
+          items: state.items,
+          total,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        console.error("API /checkout ERROR:", err);
+        alert(err);
+        throw new Error(err);
+      }
+
+      const order = await res.json();
+
+      // 2️⃣ fake AutoPay
+      const payRes = await fetch("/api/autopay/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: order.id }),
+      });
+
+      if (!payRes.ok) {
+        throw new Error("Błąd inicjalizacji płatności");
+      }
+
+      const pay = await payRes.json();
+
+      // 3️⃣ redirect
+      window.location.href = pay.paymentUrl;
+    } catch (err) {
+      console.error(err);
+      alert("Nie udało się przejść do płatności.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <main className="max-w-4xl mx-auto p-6 space-y-10">
       <h1 className="text-3xl font-bold">Finalizacja zamówienia</h1>
 
-      {/* =====================
-          PODSUMOWANIE CEN
-         ===================== */}
+      {/* PODSUMOWANIE CEN */}
       <section className="bg-moon-white rounded-xl p-6 shadow space-y-3">
         {state.items.map((item) => (
           <div key={item.id} className="flex justify-between">
@@ -110,24 +161,11 @@ export default function CheckoutPage() {
           <span>Razem</span>
           <span>{total.toFixed(2)} zł</span>
         </div>
-
-        {productsTotal < FREE_SHIPPING_THRESHOLD && (
-          <p className="text-sm text-moon-rose-dark">
-            Dodaj produkty za{" "}
-            <strong>
-              {(FREE_SHIPPING_THRESHOLD - productsTotal).toFixed(2)} zł
-            </strong>{" "}
-            aby otrzymać darmową dostawę 🚚
-          </p>
-        )}
       </section>
 
-      {/* =====================
-          KROK 1 — FORMULARZ
-         ===================== */}
+      {/* KROK 1 */}
       {step === "form" && (
         <>
-          {/* METODA DOSTAWY */}
           <section className="bg-moon-white rounded-xl p-6 shadow space-y-3">
             <label className="flex gap-2 items-center cursor-pointer">
               <input
@@ -135,7 +173,7 @@ export default function CheckoutPage() {
                 checked={shippingMethod === "locker"}
                 onChange={() => setShippingMethod("locker")}
               />
-              Paczkomat® → Paczkomat® (16,99 zł)
+              Paczkomat® → Paczkomat®
             </label>
 
             <label className="flex gap-2 items-center cursor-pointer">
@@ -144,11 +182,10 @@ export default function CheckoutPage() {
                 checked={shippingMethod === "home"}
                 onChange={() => setShippingMethod("home")}
               />
-              Kurier → Dom lub firma (19,99 zł)
+              Kurier → Dom lub firma
             </label>
           </section>
 
-          {/* FORMULARZ */}
           <form
             onSubmit={handleFormSubmit}
             className="bg-moon-white rounded-xl p-6 shadow space-y-4"
@@ -176,31 +213,17 @@ export default function CheckoutPage() {
             />
 
             {shippingMethod === "locker" && (
-              <div className="space-y-2">
-                <Input
-                  label="Kod paczkomatu InPost"
-                  required
-                  value={form.lockerCode}
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      lockerCode: e.target.value.toUpperCase(),
-                    })
-                  }
-                />
-
-                <p className="text-xs text-moon-rose-dark">
-                  Nie znasz kodu?{" "}
-                  <a
-                    href="https://inpost.pl/znajdz-paczkomat"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline"
-                  >
-                    Sprawdź paczkomat na mapie InPost
-                  </a>
-                </p>
-              </div>
+              <Input
+                label="Kod paczkomatu InPost"
+                required
+                value={form.lockerCode}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    lockerCode: e.target.value.toUpperCase(),
+                  })
+                }
+              />
             )}
 
             {shippingMethod === "home" && (
@@ -217,10 +240,7 @@ export default function CheckoutPage() {
                   required
                   value={form.postalCode}
                   onChange={(e) =>
-                    setForm({
-                      ...form,
-                      postalCode: e.target.value,
-                    })
+                    setForm({ ...form, postalCode: e.target.value })
                   }
                 />
 
@@ -240,54 +260,26 @@ export default function CheckoutPage() {
         </>
       )}
 
-      {/* =====================
-          KROK 2 — PODSUMOWANIE
-         ===================== */}
+      {/* KROK 2 */}
       {step === "summary" && (
         <section className="bg-moon-white rounded-xl p-6 shadow space-y-6">
           <h2 className="text-2xl font-semibold">Podsumowanie zamówienia</h2>
 
-          <div className="space-y-1 text-sm">
-            <p>
-              <strong>Imię i nazwisko:</strong> {form.name}
-            </p>
-            <p>
-              <strong>Email:</strong> {form.email}
-            </p>
-            <p>
-              <strong>Telefon:</strong> {form.phone}
-            </p>
-
-            <p>
-              <strong>Dostawa:</strong>{" "}
-              {shippingMethod === "locker"
-                ? `Paczkomat InPost (${form.lockerCode})`
-                : `Kurier – ${form.street}, ${form.postalCode} ${form.city}`}
-            </p>
-          </div>
-
-          <div className="flex justify-between text-lg font-bold border-t pt-4">
-            <span>Razem do zapłaty</span>
-            <span>{total.toFixed(2)} zł</span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex gap-4">
             <Button
               variant="outline"
               className="w-full"
               onClick={() => setStep("form")}
             >
-              ← Wróć do edycji
+              ← Wróć
             </Button>
 
             <Button
               className="w-full"
-              onClick={() => {
-                // TU BĘDZIE AUTOPAY
-                alert("Tu będzie płatność");
-              }}
+              disabled={isSubmitting}
+              onClick={handleCreateOrder}
             >
-              Przejdź do płatności
+              {isSubmitting ? "Przetwarzanie…" : "Przejdź do płatności"}
             </Button>
           </div>
         </section>
