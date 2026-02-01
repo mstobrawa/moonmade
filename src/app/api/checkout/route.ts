@@ -5,9 +5,9 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { customer, shippingMethod, shippingCost, items, total } = body;
+    const { customer, items, shippingMethod, shippingCost, total } = body;
 
-    // 🔒 Walidacja minimum (backend!)
+    // Minimalna walidacja
     if (
       !customer?.name ||
       !customer?.email ||
@@ -21,7 +21,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // 📦 Budowa adresu (jsonb)
     const address =
       shippingMethod === "locker"
         ? {
@@ -37,39 +36,37 @@ export async function POST(req: Request) {
             country: customer.country ?? "Polska",
           };
 
-    // 💾 ZAPIS DO BAZY
     const { data, error } = await supabase
       .from("orders")
       .insert({
+        status: "new",
+        total,
+        shipping_cost: shippingCost,
+        shipping_method: shippingMethod,
         customer_name: customer.name,
         email: customer.email,
         phone: customer.phone,
-
         address,
         items,
-
-        shipping_method: shippingMethod,
-        shipping_cost: shippingCost,
-        total,
-
-        status: "new",
         payment_provider: "autopay",
       })
-      .select()
+      .select("id")
       .single();
 
     if (error) {
-      console.error("SUPABASE ERROR:", error);
-      return NextResponse.json(
-        { error: "Nie udało się zapisać zamówienia" },
-        { status: 500 },
-      );
+      console.error("SUPABASE INSERT ERROR:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // ✅ OK
-    return NextResponse.json(data, { status: 201 });
+    return NextResponse.json(
+      {
+        orderId: data.id,
+        paymentUrl: `/payment/success?order=${data.id}`,
+      },
+      { status: 201 },
+    );
   } catch (err) {
-    console.error("API /checkout ERROR:", err);
+    console.error("API ERROR:", err);
     return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });
   }
 }

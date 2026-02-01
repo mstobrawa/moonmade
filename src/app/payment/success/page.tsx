@@ -1,13 +1,15 @@
-import Link from "next/link";
+"use client";
 
-interface SuccessPageProps {
-  searchParams: {
-    order?: string;
-  };
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+
+function formatOrderNumber(uuid: string) {
+  return `ZAM-${uuid.slice(-6).toUpperCase()}`;
 }
 
-export default function PaymentSuccessPage({ searchParams }: SuccessPageProps) {
-  const orderId = searchParams.order;
+export default function PaymentSuccessPage() {
+  const searchParams = useSearchParams();
+  const orderId = searchParams.get("order");
 
   return (
     <main className="min-h-[70vh] flex items-center justify-center px-6">
@@ -24,7 +26,7 @@ export default function PaymentSuccessPage({ searchParams }: SuccessPageProps) {
           <p className="text-xs text-moon-contrast break-all">
             Numer zamówienia:
             <br />
-            <strong>{orderId}</strong>
+            <strong>{formatOrderNumber(orderId)}</strong>
           </p>
         )}
 

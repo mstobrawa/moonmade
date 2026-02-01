@@ -8,10 +8,12 @@ interface ProductGalleryProps {
   title?: string | null;
 }
 
+const PLACEHOLDER = "/placeholder.webp";
+
 export default function ProductGallery({ images, title }: ProductGalleryProps) {
-  // 🛡️ zabezpieczenia
+  // 🛡️ zabezpieczenia danych wejściowych
   const safeImages =
-    Array.isArray(images) && images.length > 0 ? images : ["/placeholder.webp"];
+    Array.isArray(images) && images.length > 0 ? images : [PLACEHOLDER];
 
   const safeTitle =
     typeof title === "string" && title.trim().length > 0
@@ -33,6 +35,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
           priority
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 50vw"
+          onError={() => setActiveImage(PLACEHOLDER)}
         />
       </div>
 
@@ -60,6 +63,10 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                 fill
                 className="object-cover"
                 sizes="80px"
+                onError={(e) => {
+                  // jeśli miniatura padnie → podmieniamy tylko ją wizualnie
+                  (e.target as HTMLImageElement).src = PLACEHOLDER;
+                }}
               />
             </button>
           ))}

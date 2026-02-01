@@ -4,24 +4,29 @@ import Link from "next/link";
 import Image from "next/image";
 import Button from "./Button";
 import { Product } from "@/data/products";
+import { useState } from "react";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const imageSrc = product.images?.[0] ?? "/placeholder.webp";
+  // 🧠 lokalny fallback – jeśli obraz z Supabase nie istnieje
+  const [imgSrc, setImgSrc] = useState(
+    product.images?.[0] || "/placeholder.webp",
+  );
 
   return (
     <div className="bg-moon-white rounded-xl shadow-md p-4 flex flex-col">
       {/* 🖼️ ZDJĘCIE – KWADRAT */}
       <div className="relative w-full aspect-square mb-4 overflow-hidden rounded-xl bg-moon-cream">
         <Image
-          src={imageSrc}
+          src={imgSrc}
           alt={product.title}
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          onError={() => setImgSrc("/placeholder.webp")}
         />
       </div>
 
