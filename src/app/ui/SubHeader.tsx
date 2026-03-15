@@ -1,36 +1,21 @@
-"use client";
-
 export default function SubHeader() {
   return (
-    <div className="w-full bg-moon-contrast py-3 shadow-sm tracking-widest">
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-evenly">
-        {/* Lewa sekcja (widoczna tylko na desktopie) */}
-        <div className="hidden sm:flex justify-between flex-1 text-moon-cream text-sm font-light">
-          <span className="hover:drop-shadow-[0_0_6px_rgba(252,237,218,0.9)] transition">
-            Agat
-          </span>
-          <span className="hover:drop-shadow-[0_0_6px_rgba(252,237,218,0.9)] transition">
-            Kwarc
-          </span>
-          <span className="hover:drop-shadow-[0_0_6px_rgba(252,237,218,0.9)] transition">
-            Ametyst
-          </span>
+    <div className="w-full border-b border-white/12 bg-gradient-to-r from-[#2F2A28] via-[#6a625e] to-[#2F2A28] py-3 shadow-[0_10px_24px_rgba(47,42,40,0.22)]">
+      <div className="mx-auto flex max-w-7xl items-center justify-evenly px-6">
+        <div className="hidden flex-1 justify-between text-[0.72rem] font-medium tracking-[0.24em] text-[#FAF9F6] sm:flex">
+          <span className="transition hover:text-[#FCEDDA]">Agat</span>
+          <span className="transition hover:text-[#FCEDDA]">Kwarc</span>
+          <span className="transition hover:text-[#FCEDDA]">Ametyst</span>
         </div>
 
-        {/* Środkowy napis (zawsze widoczny) */}
-        <h2 className="text-center text-moon-cream text-lg sm:text-2xl font-semibold flex-1 hover:drop-shadow-[0_0_6px_rgba(252,237,218,0.9)] transition">
+        <h2 className="flex-1 text-center text-base font-semibold tracking-[0.26em] text-[#FAF9F6] sm:text-xl">
           Z&nbsp;MIŁOŚCI&nbsp;DO&nbsp;KAMIENI
         </h2>
 
-        {/* Prawa sekcja (widoczna tylko na desktopie) */}
-        <div className="hidden sm:flex justify-between flex-1 text-moon-cream text-sm font-light">
-          <span className="hover:drop-shadow-[0_0_6px_rgba(252,237,218,0.9)] transition">
-            Turmalin
-          </span>
-          <span className="hover:drop-shadow-[0_0_6px_rgba(252,237,218,0.9)] transition">
-            Onyks
-          </span>
-          <span className="hover:drop-shadow-[0_0_6px_rgba(252,237,218,0.9)] transition">
+        <div className="hidden flex-1 justify-between text-[0.72rem] font-medium tracking-[0.24em] text-[#FAF9F6] sm:flex">
+          <span className="transition hover:text-[#FCEDDA]">Turmalin</span>
+          <span className="transition hover:text-[#FCEDDA]">Onyks</span>
+          <span className="transition hover:text-[#FCEDDA]">
             Labradoryt
           </span>
         </div>

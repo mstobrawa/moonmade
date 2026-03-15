@@ -2,7 +2,7 @@ import { Playfair, Montserrat } from "next/font/google";
 
 export const playfair = Playfair({
   variable: "--font-playfair",
-  weight: ["600", "700"],
+  weight: ["500", "600", "700"],
   subsets: ["latin"],
 });
 

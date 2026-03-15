@@ -4,6 +4,7 @@ import { playfair, montserrat } from "@/app/ui/fonts";
 import Header from "./ui/Header";
 import SubHeader from "./ui/SubHeader";
 import Footer from "./ui/Footer";
+import ScrollToTop from "./ui/ScrollToTop";
 import { CartProvider } from "./(store)/cart/CartContext";
 
 export const metadata: Metadata = {
@@ -19,12 +20,15 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <body
-        className={`${playfair.variable} ${montserrat.variable} antialiased font-playfair bg-moon-cream text-moon-rose-dark min-h-screen flex flex-col`}
+        className={`${playfair.variable} ${montserrat.variable} min-h-screen bg-moon-cream text-moon-contrast antialiased flex flex-col`}
       >
         <CartProvider>
-          <Header />
-          <SubHeader />
-          <main className="flex-grow">{children}</main>
+          <ScrollToTop />
+          <div className="sticky inset-x-0 top-0 z-40">
+            <Header />
+            <SubHeader />
+          </div>
+          <main className="grow">{children}</main>
           <Footer />
         </CartProvider>
       </body>

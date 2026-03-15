@@ -1,21 +1,24 @@
-"use client";
-
-import React from "react";
 import LoginForm from "../ui/LoginForm";
 import RegisterForm from "../ui/RegisterForm";
+import HeroCard from "../ui/HeroCard";
 
 export default function SignInUpPage() {
   return (
-    <main className="min-h-screen bg-moon-cream flex items-center justify-center p-6">
+    <main className="flex min-h-screen items-center justify-center p-6">
       <div className="w-full max-w-5xl">
-        <h1 className="text-3xl font-bold text-center mb-8 text-moon-contrast">
-          Logowanie / Rejestracja
-        </h1>
+        <HeroCard className="mb-8">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-moon-rose-dark">
+            Moonmade Account
+          </p>
+          <h1 className="text-4xl font-semibold tracking-tight text-moon-contrast">
+            Logowanie / Rejestracja
+          </h1>
+        </HeroCard>
 
         {/* Grid: mobile -> stacked, desktop -> two columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Login panel */}
-          <section className="rounded-2xl p-6 bg-moon-cream shadow-2xl">
+          <HeroCard className="h-full">
             <div className="mb-4">
               <h2 className="text-xl font-semibold text-moon-contrast">
                 Logowanie
@@ -25,10 +28,10 @@ export default function SignInUpPage() {
               </p>
             </div>
             <LoginForm />
-          </section>
+          </HeroCard>
 
           {/* Register panel */}
-          <section className="rounded-2xl p-6 bg-moon-cream shadow-2xl">
+          <HeroCard className="h-full">
             <div className="mb-4">
               <h2 className="text-xl font-semibold text-moon-contrast">
                 Rejestracja
@@ -38,7 +41,7 @@ export default function SignInUpPage() {
               </p>
             </div>
             <RegisterForm />
-          </section>
+          </HeroCard>
         </div>
       </div>
     </main>

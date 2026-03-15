@@ -8,7 +8,6 @@ import { supabaseServer as supabase } from "@/lib/supabase/server";
 import ProductGallery from "./ProductGallery";
 import AddToCartButton from "@/app/ui/AddToCartButton";
 import Button from "@/app/ui/Button";
-import Link from "next/link";
 
 interface ProductPageProps {
   params: Promise<{
@@ -34,7 +33,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <main className="min-h-screen bg-moon-cream px-6 py-16">
-      <div className="max-w-5xl mx-auto bg-moon-white rounded-2xl shadow-md p-8 grid md:grid-cols-2 gap-10">
+      <div className="mx-auto grid max-w-5xl gap-10 rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-6 shadow-sm md:grid-cols-2 md:p-10">
         {/* =====================
             GALERIA
            ===================== */}
@@ -46,17 +45,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <div className="flex flex-col gap-6">
           {/* Tytuł + opis */}
           <div>
-            <h1 className="text-3xl font-bold text-moon-contrast mb-2">
+            <h1 className="mb-3 text-4xl font-semibold leading-tight text-moon-contrast">
               {product.title}
             </h1>
 
-            <p className="text-lg text-moon-contrast leading-relaxed">
+            <p className="text-base leading-8 text-moon-contrast/78 sm:text-lg">
               {product.description}
             </p>
           </div>
 
           {/* Cena */}
-          <p className="text-2xl font-semibold">{product.price} zł</p>
+          <p className="text-2xl font-semibold tracking-[0.01em] text-moon-rose-dark">
+            {product.price} zł
+          </p>
 
           {/* CTA */}
           <div className="space-y-3">
@@ -70,20 +71,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
             />
 
             <div className="grid grid-cols-2 gap-3">
-              <Link href="/products">
-                <Button variant="outline" className="w-full">
-                  ← Wróć
-                </Button>
-              </Link>
+              <Button
+                as="a"
+                href="/products"
+                variant="outline"
+                className="w-full bg-moon-white/80 shadow-[0_10px_22px_rgba(47,42,40,0.06)]"
+              >
+                ← Wróć
+              </Button>
 
-              <Link href="/cart">
-                <Button className="w-full">Koszyk</Button>
-              </Link>
+              <Button as="a" href="/cart" className="w-full">
+                Koszyk
+              </Button>
             </div>
           </div>
 
           {/* Info dodatkowe */}
-          <div className="pt-4 border-t text-sm text-moon-rose-dark">
+          <div className="border-t border-[#dccdc4] pt-4 text-sm tracking-[0.06em] text-moon-rose-dark">
             Unikat – dostępna tylko 1 sztuka
           </div>
         </div>

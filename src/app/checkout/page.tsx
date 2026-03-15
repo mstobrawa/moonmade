@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useCart } from "@/app/(store)/cart/CartContext";
 import Button from "@/app/ui/Button";
 import Input from "@/app/ui/Input";
+import HeroCard from "@/app/ui/HeroCard";
 
 type ShippingMethod = "locker" | "home";
 type Step = "form" | "summary";
@@ -41,11 +41,19 @@ export default function CheckoutPage() {
 
   if (state.items.length === 0) {
     return (
-      <main className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl font-semibold">Twój koszyk jest pusty 🛒</h1>
-        <Link href="/products">
-          <Button>Wróć do produktów</Button>
-        </Link>
+      <main className="flex min-h-[60vh] items-center justify-center px-6 py-12">
+        <HeroCard className="text-center">
+          <h1 className="mb-4 text-4xl font-semibold tracking-tight">
+            Twój koszyk jest pusty 🛒
+          </h1>
+          <p className="mx-auto mb-8 max-w-2xl text-base leading-8 text-moon-contrast/74">
+            Dodaj produkty do koszyka, aby przejść do bezpiecznej finalizacji
+            zamówienia.
+          </p>
+          <Button as="a" href="/products">
+            Wróć do produktów
+          </Button>
+        </HeroCard>
       </main>
     );
   }
@@ -135,8 +143,15 @@ export default function CheckoutPage() {
   };
 
   return (
-    <main className="max-w-4xl mx-auto p-6 space-y-10">
-      <h1 className="text-3xl font-bold">Finalizacja zamówienia</h1>
+    <main className="mx-auto max-w-5xl px-6 py-12 space-y-10 md:px-8 md:py-16">
+      <HeroCard>
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-moon-rose-dark">
+          Moonmade Checkout
+        </p>
+        <h1 className="text-4xl font-semibold tracking-tight">
+          Finalizacja zamówienia
+        </h1>
+      </HeroCard>
 
       {/* =======================
          KROK 1 — FORMULARZ
@@ -144,14 +159,14 @@ export default function CheckoutPage() {
       {step === "form" && (
         <>
           {/* DOSTAWA */}
-          <section className="bg-moon-white rounded-xl p-6 shadow space-y-4">
+          <section className="rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-6 shadow-sm space-y-4">
             <h2 className="text-xl font-semibold">Dostawa</h2>
 
             <div
               className={`border rounded-lg p-4 cursor-pointer transition ${
                 shippingMethod === "locker"
-                  ? "border-moon-rose bg-moon-rose-light/30"
-                  : ""
+                  ? "border-moon-rose bg-moon-white/55"
+                  : "border-[#dccfc7] bg-[#f8f1eb]"
               }`}
               onClick={() => setShippingMethod("locker")}
             >
@@ -161,8 +176,8 @@ export default function CheckoutPage() {
             <div
               className={`border rounded-lg p-4 cursor-pointer transition ${
                 shippingMethod === "home"
-                  ? "border-moon-rose bg-moon-rose-light/30"
-                  : ""
+                  ? "border-moon-rose bg-moon-white/55"
+                  : "border-[#dccfc7] bg-[#f8f1eb]"
               }`}
               onClick={() => setShippingMethod("home")}
             >
@@ -180,7 +195,7 @@ export default function CheckoutPage() {
           {/* FORMULARZ */}
           <form
             onSubmit={handleFormSubmit}
-            className="bg-moon-white rounded-xl p-6 shadow space-y-4"
+            className="rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-6 shadow-sm space-y-4"
           >
             <Input
               label="Imię i nazwisko"
@@ -269,7 +284,7 @@ export default function CheckoutPage() {
               <p>
                 Akceptuję{" "}
                 <a
-                  href="/regulamin"
+                  href="/statute"
                   target="_blank"
                   className="underline hover:opacity-80"
                 >
@@ -298,7 +313,7 @@ export default function CheckoutPage() {
          KROK 2 — PODSUMOWANIE
          ======================= */}
       {step === "summary" && (
-        <section className="bg-moon-white rounded-xl p-6 shadow space-y-6">
+        <section className="rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-6 shadow-sm space-y-6">
           <h2 className="text-2xl font-semibold">Podsumowanie zamówienia</h2>
 
           <div className="space-y-3">
@@ -354,9 +369,14 @@ export default function CheckoutPage() {
         </section>
       )}
 
-      <Link href="/cart">
-        <Button variant="outline">← Wróć do koszyka</Button>
-      </Link>
+      <Button
+        as="a"
+        href="/cart"
+        variant="outline"
+        className="bg-moon-white/80 shadow-[0_10px_22px_rgba(47,42,40,0.06)]"
+      >
+        ← Wróć do koszyka
+      </Button>
     </main>
   );
 }

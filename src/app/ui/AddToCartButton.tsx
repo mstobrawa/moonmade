@@ -32,7 +32,11 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
   };
 
   return (
-    <Button onClick={handleAddToCart} disabled={isInCart} className="w-full">
+    <Button
+      onClick={handleAddToCart}
+      disabled={isInCart}
+      className="w-full shadow-[0_12px_26px_rgba(138,110,108,0.14)]"
+    >
       {isInCart ? "Dodano do koszyka ✓" : "Dodaj do koszyka"}
     </Button>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { usePathname } from "next/navigation";
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
@@ -20,21 +19,22 @@ export default function HeaderUser() {
   const totalItems = isHydrated ? state.items.length : 0;
 
   return (
-    <div className="flex items-end gap-6">
+    <div className="flex items-center gap-4">
       {/* 🛒 Koszyk */}
       <Link
         href="/cart"
-        className={`text-moon-contrast ${hoverUnderline} ${
+        className={`relative inline-flex items-center justify-center py-2 text-moon-contrast transition-all duration-300 ease-out hover:scale-[1.03] hover:opacity-80 ${hoverUnderline} ${
           isCartActive ? "after:w-full" : ""
         }`}
+        aria-label="Koszyk"
       >
         <span className="relative inline-flex items-center justify-center">
-          <ShoppingCart size={24} />
+          <ShoppingCart size={22} strokeWidth={1.8} />
 
           {isHydrated && totalItems > 0 && (
             <Badge
               variant="rose"
-              className="absolute -top-2 -right-2 shadow-md"
+              className="absolute -right-2.5 -top-2 h-[18px] min-w-[18px] text-[10px] shadow-[0_8px_18px_rgba(47,42,40,0.12)]"
             >
               {totalItems}
             </Badge>

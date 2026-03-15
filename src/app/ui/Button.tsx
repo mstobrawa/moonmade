@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import React from "react";
 import Link from "next/link";
 
@@ -23,20 +24,21 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    "inline-flex items-center justify-center rounded-xl transition font-semibold";
+    "inline-flex items-center justify-center gap-2 rounded-full border border-transparent font-semibold tracking-[0.01em] transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moon-rose/40 focus-visible:ring-offset-2 focus-visible:ring-offset-moon-cream active:scale-[0.99]";
 
   const variants = {
-    primary: "bg-moon-rose text-moon-white hover:bg-moon-rose-dark",
+    primary:
+      "bg-gradient-to-r from-moon-rose to-moon-rose-dark text-moon-white shadow-[0_14px_35px_rgba(138,110,108,0.18)] hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(138,110,108,0.22)]",
     secondary:
-      "bg-moon-rose-light text-moon-contrast hover:bg-moon-rose-dark hover:text-moon-cream",
+      "bg-moon-white/90 text-moon-contrast shadow-[0_10px_25px_rgba(47,42,40,0.08)] hover:-translate-y-0.5 hover:bg-moon-white hover:shadow-[0_14px_32px_rgba(47,42,40,0.12)]",
     outline:
-      "border border-moon-contrast text-moon-contrast bg-transparent hover:bg-moon-contrast hover:text-moon-cream",
+      "border-moon-contrast/20 bg-moon-white/70 text-moon-contrast shadow-[0_10px_25px_rgba(47,42,40,0.06)] hover:-translate-y-0.5 hover:border-moon-rose/40 hover:bg-moon-white hover:shadow-[0_16px_34px_rgba(47,42,40,0.1)]",
   };
 
   const sizes = {
-    sm: "px-3 py-1 text-sm",
-    md: "px-4 py-2 text-base",
-    lg: "px-6 py-3 text-lg",
+    sm: "px-4 py-2 text-sm",
+    md: "px-5 py-3 text-sm sm:text-base",
+    lg: "px-7 py-3.5 text-base sm:text-lg",
   };
 
   // 🔑 Wykrywamy disabled z propsów
@@ -46,13 +48,13 @@ export default function Button({
     ? "opacity-50 cursor-not-allowed pointer-events-none"
     : "";
 
-  const allClasses = `
-    ${baseStyles}
-    ${variants[variant]}
-    ${sizes[size]}
-    ${disabledStyles}
-    ${className}
-  `;
+  const allClasses = clsx(
+    baseStyles,
+    variants[variant],
+    sizes[size],
+    disabledStyles,
+    className,
+  );
 
   if (as === "a" && href) {
     return (

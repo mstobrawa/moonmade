@@ -1,13 +1,10 @@
-"use client";
-
-import React from "react";
 import FooterColumn from "./FooterColumn";
 import FooterBottom from "./FooterBottom";
 
 export default function Footer() {
   return (
-    <footer className="bg-moon-contrast text-moon-cream py-10 mt-auto">
-      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+    <footer className="mt-auto border-t border-white/10 bg-gradient-to-r from-[#2F2A28] via-[#6a625e] to-[#2F2A28] py-14 text-[#FAF9F6]">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 md:grid-cols-3">
         <FooterColumn
           title="Informacje"
           links={[

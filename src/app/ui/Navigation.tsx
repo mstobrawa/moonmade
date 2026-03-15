@@ -23,7 +23,7 @@ export default function Navigation() {
       {/* Burger button */}
       <button
         onClick={toggleMenu}
-        className="flex flex-col gap-1.5 p-2 focus:outline-none sm:hidden"
+        className="flex flex-col gap-1.5 rounded-full border border-moon-contrast/10 bg-moon-cream/65 p-3 shadow-[0_10px_24px_rgba(47,42,40,0.08)] transition-all duration-300 ease-out hover:bg-moon-white/60 sm:hidden"
         aria-label="Otwórz menu"
       >
         <span
@@ -45,7 +45,7 @@ export default function Navigation() {
 
       {/* Mobile menu */}
       <div
-        className={`absolute left-0 w-2xs bg-moon-cream border border-moon-contrast rounded-xl p-6 flex flex-col gap-4 z-50
+        className={`absolute left-0 top-14 z-50 flex w-64 flex-col gap-3 rounded-[1.5rem] border border-moon-contrast/10 bg-[linear-gradient(180deg,rgba(252,237,218,0.9),rgba(247,231,216,0.8))] p-5 shadow-[0_18px_40px_rgba(47,42,40,0.12)] backdrop-blur-xl
     transition-all duration-300 ease-in-out
     ${
       isOpen
@@ -61,7 +61,7 @@ export default function Navigation() {
       </div>
 
       {/* Desktop menu */}
-      <div className="hidden sm:flex gap-6">
+      <div className="hidden items-center gap-7 sm:flex">
         <MenuItem href="/" label="Strona główna" />
         <MenuItem href="/products" label="Produkty" />
         <MenuItem href="/about" label="O nas" />

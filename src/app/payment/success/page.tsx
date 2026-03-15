@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ClearCartClient from "./ClearCartClient";
+import HeroCard from "@/app/ui/HeroCard";
 
 interface SuccessPageProps {
   searchParams: {
@@ -16,15 +17,15 @@ export default function PaymentSuccessPage({ searchParams }: SuccessPageProps) {
 
   return (
     <main className="min-h-[70vh] flex items-center justify-center px-6">
-      <div className="max-w-md w-full bg-moon-white rounded-2xl shadow-md p-8 text-center space-y-6">
+      <HeroCard className="max-w-3xl text-center">
         {/* 🔥 TO CZYŚCI KOSZYK (CLIENT) */}
         <ClearCartClient />
 
-        <h1 className="text-3xl font-bold text-moon-contrast">
+        <h1 className="text-4xl font-semibold tracking-tight text-moon-contrast">
           Dziękujemy za zamówienie 💖
         </h1>
 
-        <p className="text-sm text-moon-rose-dark">
+        <p className="text-base leading-8 text-moon-contrast/74">
           Twoje zamówienie zostało przyjęte do realizacji.
         </p>
 
@@ -37,19 +38,21 @@ export default function PaymentSuccessPage({ searchParams }: SuccessPageProps) {
         )}
 
         <div className="flex flex-col gap-3 pt-4">
-          <Link href="/products">
-            <button className="w-full rounded-xl border border-moon-contrast py-2 hover:bg-moon-cream transition">
-              Wróć do sklepu
-            </button>
+          <Link
+            href="/products"
+            className="inline-flex w-full items-center justify-center rounded-full border border-moon-contrast/15 bg-moon-white/80 px-5 py-3 font-semibold text-moon-contrast shadow-[0_12px_30px_rgba(47,42,40,0.08)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-moon-white hover:shadow-[0_16px_36px_rgba(47,42,40,0.12)]"
+          >
+            Wróć do sklepu
           </Link>
 
-          <Link href="/">
-            <button className="w-full rounded-xl bg-moon-contrast text-moon-cream py-2 hover:opacity-90 transition">
-              Strona główna
-            </button>
+          <Link
+            href="/"
+            className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-moon-contrast to-moon-rose-dark px-5 py-3 font-semibold text-moon-cream shadow-[0_14px_35px_rgba(47,42,40,0.18)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(47,42,40,0.22)]"
+          >
+            Strona główna
           </Link>
         </div>
-      </div>
+      </HeroCard>
     </main>
   );
 }

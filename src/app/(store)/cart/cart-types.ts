@@ -10,5 +10,6 @@ export type CartState = {
 };
 
 export type CartAction =
+  | { type: "ADD_ITEM"; payload: CartItem }
   | { type: "REMOVE_ITEM"; payload: { id: string } } // usuń po id
   | { type: "CLEAR" }; // wyczyść koszyk

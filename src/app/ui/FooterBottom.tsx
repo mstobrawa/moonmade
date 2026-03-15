@@ -1,13 +1,11 @@
-"use client";
-
 export default function FooterBottom() {
   return (
-    <div className="mt-10 border-t border-moon-cream/20 pt-4 text-center space-y-1">
-      <p className="text-xs text-moon-cream/70">
+    <div className="mt-12 space-y-2 border-t border-white/12 pt-6 text-center">
+      <p className="text-xs tracking-[0.12em] text-[#FAF9F6]">
         © {new Date().getFullYear()} Moonmade.pl
       </p>
 
-      <p className="text-[10px] text-moon-cream/40 tracking-wide">
+      <p className="text-[10px] tracking-[0.18em] text-[#FAF9F6]/70">
         crafted by Mike Webworks
       </p>
     </div>

@@ -27,13 +27,13 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
       {/* =====================
           GŁÓWNE ZDJĘCIE
          ===================== */}
-      <div className="relative w-full aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden bg-moon-cream">
+      <div className="relative w-full aspect-square overflow-hidden rounded-xl border border-[#e7ddd6] bg-[linear-gradient(180deg,rgba(250,245,240,0.96),rgba(231,216,206,0.68))] md:aspect-[4/5]">
         <Image
           src={activeImage}
           alt={safeTitle}
           fill
           priority
-          className="object-cover"
+          className="object-cover transition-transform duration-700 ease-out hover:scale-[1.03]"
           sizes="(max-width: 768px) 100vw, 50vw"
           onError={() => setActiveImage(PLACEHOLDER)}
         />
@@ -43,17 +43,17 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
           MINIATURY
          ===================== */}
       {safeImages.length > 1 && (
-        <div className="flex gap-3 justify-center md:justify-start">
+        <div className="flex justify-center gap-3 md:justify-start">
           {safeImages.map((img, index) => (
             <button
               key={index}
               type="button"
               onClick={() => setActiveImage(img)}
-              className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition
+              className={`relative h-20 w-20 overflow-hidden rounded-xl border shadow-sm transition-all duration-300 ease-out
                 ${
                   activeImage === img
-                    ? "border-moon-rose"
-                    : "border-transparent hover:border-moon-rose-light"
+                    ? "border-moon-rose bg-moon-white/70 -translate-y-0.5"
+                    : "border-[#e7ddd6] bg-[#f6f1ed] hover:-translate-y-0.5 hover:border-moon-rose-light"
                 }`}
               aria-label={`Pokaż zdjęcie ${index + 1}`}
             >

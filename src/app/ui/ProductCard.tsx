@@ -1,13 +1,20 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import Button from "./Button";
-import { Product } from "@/data/products";
 import { useState } from "react";
 
+export interface StorefrontProduct {
+  id: string;
+  slug: string;
+  title: string;
+  price: number;
+  description: string;
+  images?: string[] | null;
+}
+
 interface ProductCardProps {
-  product: Product;
+  product: StorefrontProduct;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
@@ -17,34 +24,43 @@ export default function ProductCard({ product }: ProductCardProps) {
   );
 
   return (
-    <div className="bg-moon-white rounded-xl shadow-md p-4 flex flex-col">
+    <article className="group flex h-full min-h-[30rem] flex-col overflow-hidden rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-5 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#d8cbc2] hover:shadow-[0_14px_28px_rgba(47,42,40,0.08)]">
       {/* 🖼️ ZDJĘCIE – KWADRAT */}
-      <div className="relative w-full aspect-square mb-4 overflow-hidden rounded-xl bg-moon-cream">
+      <div className="relative mb-6 aspect-square w-full flex-none overflow-hidden rounded-xl border border-[#e7ddd6]/90 bg-[linear-gradient(180deg,rgba(250,245,240,0.96),rgba(231,216,206,0.68))]">
         <Image
           src={imgSrc}
           alt={product.title}
           fill
-          className="object-cover"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           onError={() => setImgSrc("/placeholder.webp")}
         />
       </div>
 
       {/* 📄 TREŚĆ */}
-      <h3 className="text-lg font-medium mb-1">{product.title}</h3>
+      <h3 className="mb-2 text-2xl font-semibold leading-tight text-moon-contrast">
+        {product.title}
+      </h3>
 
-      <p className="text-sm text-moon-contrast mb-2 line-clamp-2">
+      <p className="mb-4 line-clamp-3 text-sm leading-7 text-moon-contrast/72">
         {product.description}
       </p>
 
-      <p className="font-semibold mb-4">{product.price} zł</p>
+      <p className="mb-6 text-lg font-semibold tracking-[0.01em] text-moon-rose-dark">
+        {product.price} zł
+      </p>
 
       {/* CTA NA DOLE */}
       <div className="mt-auto">
-        <Link href={`/products/${product.slug}`} className="block">
-          <Button className="w-full">Szczegóły</Button>
-        </Link>
+        <Button
+          as="a"
+          href={`/products/${product.slug}`}
+          className="w-full bg-moon-white/80 shadow-[0_10px_22px_rgba(47,42,40,0.06)]"
+          variant="outline"
+        >
+          Szczegóły
+        </Button>
       </div>
-    </div>
+    </article>
   );
 }

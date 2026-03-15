@@ -7,16 +7,7 @@ import React, {
   useReducer,
   useState,
 } from "react";
-import type { CartItem } from "./cart-types";
-
-type CartState = {
-  items: CartItem[];
-};
-
-type CartAction =
-  | { type: "ADD_ITEM"; payload: CartItem }
-  | { type: "REMOVE_ITEM"; payload: { id: string } }
-  | { type: "CLEAR" };
+import type { CartAction, CartState } from "./cart-types";
 
 const CartCtx = createContext<{
   state: CartState;

@@ -13,7 +13,7 @@ export default function Input({ label, className = "", ...props }: InputProps) {
 
   return (
     // ⬇️ KLUCZ: wrapper MA TŁO
-    <div className={`relative w-full bg-moon-white ${className}`}>
+    <div className={`relative w-full ${className}`}>
       {/* INPUT */}
       <input
         id={props.id || label}
@@ -23,17 +23,22 @@ export default function Input({ label, className = "", ...props }: InputProps) {
         className="
           peer
           w-full
-          border-2
-          rounded-xl
-          border-moon-contrast
-          bg-transparent
+          rounded-[1.25rem]
+          border
+          border-moon-contrast/15
+          bg-moon-white/80
           px-4
-          py-3
+          py-3.5
           pr-10
           text-moon-contrast
           placeholder-transparent
+          shadow-[0_10px_24px_rgba(47,42,40,0.05)]
           focus:outline-none
-          focus:border-moon-rose-dark
+          focus:border-moon-rose-dark/50
+          focus:bg-moon-white
+          focus:shadow-[0_14px_30px_rgba(138,110,108,0.12)]
+          transition-all
+          duration-300
         "
       />
 
@@ -42,7 +47,7 @@ export default function Input({ label, className = "", ...props }: InputProps) {
         <button
           type="button"
           onClick={() => setShowPassword((prev) => !prev)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-moon-rose-dark hover:text-moon-rose"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-moon-rose-dark transition-colors duration-300 hover:text-moon-rose"
           tabIndex={-1}
         >
           {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -56,18 +61,19 @@ export default function Input({ label, className = "", ...props }: InputProps) {
           className="
             absolute
             left-4
-            top-3
-            px-1
-            text-moon-rose-dark
+            top-3.5
+            rounded-full
             bg-moon-white
+            px-2
+            text-moon-rose-dark/85
             transition-all
             duration-200
             pointer-events-none
-            peer-placeholder-shown:top-3
+            peer-placeholder-shown:top-3.5
             peer-placeholder-shown:text-base
-            peer-focus:-top-2
+            peer-focus:-top-2.5
             peer-focus:text-sm
-            peer-not-placeholder-shown:-top-2
+            peer-not-placeholder-shown:-top-2.5
             peer-not-placeholder-shown:text-sm
           "
         >

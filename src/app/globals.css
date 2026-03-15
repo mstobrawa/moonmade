@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Fairytale";
+  src:
+    local("Fairytale"),
+    local("Fairytale Regular"),
+    local("Fairytale-Regular");
+  font-display: swap;
+}
+
 @theme {
   --color-moon-rose: #b39793;
   --color-moon-cream: #fcedda;
@@ -7,10 +16,77 @@
   --color-moon-rose-dark: #8a6e6c;
   --color-moon-rose-light: #dcc0bd;
   --color-moon-contrast: #2f2a28;
+  --color-moon-sand: #ead8c8;
+  --color-moon-glow: rgba(250, 249, 246, 0.68);
 
   --font-playfair: var(--font-playfair);
   --font-montserrat: var(--font-montserrat);
 }
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-montserrat), sans-serif;
+    background:
+      radial-gradient(circle at top, rgba(220, 192, 189, 0.34), transparent 32%),
+      linear-gradient(180deg, #fff8f0 0%, #fcedda 38%, #f7e7d8 100%);
+    line-height: 1.7;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-playfair), serif;
+    color: var(--color-moon-contrast);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    font-weight: 600;
+  }
+
+  p,
+  li,
+  label,
+  input,
+  textarea,
+  button,
+  a {
+    font-family: var(--font-montserrat), sans-serif;
+  }
+
+  ::selection {
+    background: rgba(179, 151, 147, 0.28);
+    color: var(--color-moon-contrast);
+  }
+}
+
+@utility moon-shell {
+  @apply rounded-[2rem] border border-moon-contrast/8 bg-moon-white/88 shadow-[0_24px_60px_rgba(47,42,40,0.1)] backdrop-blur-sm;
+}
+
+@utility moon-copy {
+  @apply text-base leading-8 text-moon-contrast/82;
+}
+
+@utility moon-nav-text {
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+@utility moon-brand-text {
+  font-family: "Fairytale", var(--font-playfair), serif;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+}
+
+
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px #fcedda inset !important;
 }

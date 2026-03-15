@@ -8,9 +8,9 @@ interface LogoProps {
 export default function Logo({ size = 100, className = "" }: LogoProps) {
   return (
     <div
-      className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 ${className}`}
+      className={`flex flex-col items-center justify-center gap-1 sm:flex-row sm:gap-3 ${className}`}
     >
-      <span className="order-2 sm:order-1 text-3xl sm:text-5xl text-center">
+      <span className="moon-brand-text order-2 text-center text-3xl text-moon-contrast sm:order-1 sm:text-5xl">
         MOON
       </span>
 
@@ -20,10 +20,12 @@ export default function Logo({ size = 100, className = "" }: LogoProps) {
         width={size}
         height={size}
         priority
-        className="order-1 sm:order-2 w-20 sm:w-24 h-auto"
+        className="order-1 h-auto w-20 drop-shadow-[0_10px_24px_rgba(138,110,108,0.22)] transition-transform duration-500 ease-out hover:scale-[1.03] sm:order-2 sm:w-24"
       />
 
-      <span className="order-3 text-3xl sm:text-5xl text-center">MADE</span>
+      <span className="moon-brand-text order-3 text-center text-3xl text-moon-contrast sm:text-5xl">
+        MADE
+      </span>
     </div>
   );
 }

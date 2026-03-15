@@ -1,4 +1,4 @@
-import React from "react";
+import HeroCard from "./HeroCard";
 
 interface StaticPageLayoutProps {
   title: string;
@@ -10,12 +10,21 @@ export default function StaticPageLayout({
   children,
 }: StaticPageLayoutProps) {
   return (
-    <main className="min-h-screen bg-moon-cream text-moon-contrast px-4 py-10">
-      <div className="max-w-3xl mx-auto bg-moon-white rounded-2xl shadow-md p-6 md:p-10">
-        <h1 className="text-3xl font-bold mb-8 text-center">{title}</h1>
+    <main className="min-h-screen px-4 py-12 text-moon-contrast md:px-6 md:py-16">
+      <HeroCard>
+        <p className="moon-nav-text mb-3 text-[0.72rem] text-moon-rose-dark/80">
+          Moonmade
+        </p>
+        <h1 className="mb-8 text-left text-4xl font-semibold tracking-tight sm:text-5xl">
+          {title}
+        </h1>
 
-        <div className="prose prose-neutral max-w-none">{children}</div>
-      </div>
+        <div>
+          <div className="space-y-5 text-base leading-8 text-moon-contrast/82 [&_a]:text-moon-rose-dark [&_a]:transition-colors [&_a]:duration-300 [&_a]:hover:text-moon-contrast [&_h2]:mt-8 [&_h2]:text-2xl [&_h2]:font-semibold [&_h3]:mt-6 [&_h3]:text-xl [&_h3]:font-semibold [&_li]:ml-5 [&_li]:list-disc [&_strong]:font-medium [&_ul]:space-y-2">
+            {children}
+          </div>
+        </div>
+      </HeroCard>
     </main>
   );
 }
