@@ -32,7 +32,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-moon-cream px-6 py-16">
+    <main className="min-h-screen bg-moon-cream px-6 py-10 md:py-12">
       <div className="mx-auto grid max-w-5xl gap-10 rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-6 shadow-sm md:grid-cols-2 md:p-10">
         {/* =====================
             GALERIA

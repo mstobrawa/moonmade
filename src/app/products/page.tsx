@@ -28,29 +28,33 @@ export default async function ProductPage() {
     );
   }
 
-  const normalizedProducts: StoreProduct[] = (products ?? []).map((product) => ({
-    id: String(product.id),
-    slug: String(product.slug),
-    title: String(product.title),
-    price: Number(product.price),
-    description: String(product.description ?? ""),
-    images: Array.isArray(product.images)
-      ? product.images.filter(
-          (image: unknown): image is string => typeof image === "string",
-        )
-      : [],
-  }));
+  const normalizedProducts: StoreProduct[] = (products ?? []).map(
+    (product) => ({
+      id: String(product.id),
+      slug: String(product.slug),
+      title: String(product.title),
+      price: Number(product.price),
+      description: String(product.description ?? ""),
+      images: Array.isArray(product.images)
+        ? product.images.filter(
+            (image: unknown): image is string => typeof image === "string",
+          )
+        : [],
+    }),
+  );
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-6 py-12 md:px-8 md:py-16">
-      <HeroCard className="mb-10">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-moon-rose-dark">
+    <main className="mx-auto w-full max-w-[1100px] px-6 py-6">
+      <HeroCard className="mb-6">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-moon-rose-dark">
           Kolekcja Moonmade
         </p>
-        <h1 className="max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">
+
+        <h1 className="max-w-xl text-3xl font-semibold tracking-tight md:text-4xl">
           Ręcznie tworzona biżuteria z kamieni naturalnych
         </h1>
-        <p className="mt-4 max-w-2xl text-base leading-8 text-moon-contrast/75">
+
+        <p className="mt-3 max-w-xl text-sm leading-7 text-moon-contrast/75">
           Każdy egzemplarz jest unikatowy i powstaje z dbałością o proporcje,
           detal i subtelny blask naturalnych minerałów.
         </p>

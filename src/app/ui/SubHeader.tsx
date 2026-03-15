@@ -1,7 +1,7 @@
 export default function SubHeader() {
   return (
-    <div className="w-full border-b border-white/12 bg-gradient-to-r from-[#2F2A28] via-[#6a625e] to-[#2F2A28] py-3 shadow-[0_10px_24px_rgba(47,42,40,0.22)]">
-      <div className="mx-auto flex max-w-7xl items-center justify-evenly px-6">
+    <div className="w-full border-b border-white/12 bg-gradient-to-r from-[#2F2A28] via-[#6a625e] to-[#2F2A28] py-2 md:py-1.5 shadow-[0_10px_24px_rgba(47,42,40,0.22)]">
+      <div className="mx-auto flex max-w-6xl items-center justify-evenly px-6 md:max-w-[1200px]">
         <div className="hidden flex-1 justify-between text-[0.72rem] font-medium tracking-[0.24em] text-[#FAF9F6] sm:flex">
           <span className="transition hover:text-[#FCEDDA]">Agat</span>
           <span className="transition hover:text-[#FCEDDA]">Kwarc</span>
