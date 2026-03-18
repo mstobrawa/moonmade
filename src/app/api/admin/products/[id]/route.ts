@@ -25,6 +25,22 @@ function normalizeImages(value: string | string[] | undefined) {
     .filter(Boolean);
 }
 
+function getStoragePathFromPublicUrl(imageUrl: string, bucket: string) {
+  try {
+    const url = new URL(imageUrl);
+    const marker = `/storage/v1/object/public/${bucket}/`;
+    const markerIndex = url.pathname.indexOf(marker);
+
+    if (markerIndex === -1) {
+      return null;
+    }
+
+    return decodeURIComponent(url.pathname.slice(markerIndex + marker.length));
+  } catch {
+    return null;
+  }
+}
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -89,6 +105,42 @@ export async function DELETE(
 
   try {
     const { id } = await params;
+
+    const bucket = process.env.SUPABASE_STORAGE_BUCKET ?? "products";
+    const { data: product } = await supabaseServer
+      .from("products")
+      .select("id, images")
+      .eq("id", id)
+      .single();
+
+    const listedFiles = await supabaseServer.storage.from(bucket).list(id, {
+      limit: 1000,
+    });
+
+    const storagePaths = new Set<string>();
+
+    for (const item of listedFiles.data ?? []) {
+      if (item.name) {
+        storagePaths.add(`${id}/${item.name}`);
+      }
+    }
+
+    for (const imageUrl of (product?.images as string[] | null) ?? []) {
+      const path = getStoragePathFromPublicUrl(imageUrl, bucket);
+      if (path?.startsWith(`${id}/`)) {
+        storagePaths.add(path);
+      }
+    }
+
+    if (storagePaths.size > 0) {
+      const { error: storageError } = await supabaseServer.storage
+        .from(bucket)
+        .remove([...storagePaths]);
+
+      if (storageError) {
+        return NextResponse.json({ error: storageError.message }, { status: 500 });
+      }
+    }
 
     const { error } = await supabaseServer.from("products").delete().eq("id", id);
 
