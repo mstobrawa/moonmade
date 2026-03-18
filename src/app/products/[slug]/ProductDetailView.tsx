@@ -80,12 +80,12 @@ export default function ProductDetailView({
 
   return (
     <>
-      <div className="mx-auto grid max-w-[770px] gap-3.5 rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-3 shadow-sm md:grid-cols-[0.76fr_1fr] md:p-3.5">
-        <div className="md:max-w-[17rem]">
+      <div className="mx-auto grid max-w-[770px] gap-3.5 rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-3 shadow-sm md:grid-cols-[0.82fr_1fr] md:p-3.5">
+        <div className="md:max-w-[18.75rem]">
           <button
             type="button"
             onClick={openModal}
-            className="group relative block aspect-square w-full overflow-hidden rounded-xl border border-[#e7ddd6] bg-[linear-gradient(180deg,rgba(250,245,240,0.96),rgba(231,216,206,0.68))] text-left transition-all duration-300 ease-out hover:border-[#d8cbc2] md:aspect-[4/5]"
+            className="group relative block aspect-square w-full overflow-hidden rounded-xl border border-[#e7ddd6] bg-[linear-gradient(180deg,rgba(250,245,240,0.96),rgba(231,216,206,0.68))] text-left transition-all duration-300 ease-out hover:border-[#d8cbc2] md:aspect-[4/5.4]"
             aria-label="Powieksz zdjecie produktu"
           >
             <Image
@@ -94,7 +94,7 @@ export default function ProductDetailView({
               fill
               priority
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              sizes="(max-width: 768px) 100vw, 30vw"
+              sizes="(max-width: 768px) 100vw, 34vw"
               onError={() => setActiveImage(PLACEHOLDER)}
             />
             <span className="absolute inset-x-3 bottom-3 rounded-full bg-[#2f2a28]/70 px-3 py-1 text-[0.62rem] uppercase tracking-[0.12em] text-[#faf9f6] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
