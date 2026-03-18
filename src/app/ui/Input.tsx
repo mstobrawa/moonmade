@@ -12,9 +12,7 @@ export default function Input({ label, className = "", ...props }: InputProps) {
   const [showPassword, setShowPassword] = React.useState(false);
 
   return (
-    // ⬇️ KLUCZ: wrapper MA TŁO
     <div className={`relative w-full ${className}`}>
-      {/* INPUT */}
       <input
         id={props.id || label}
         {...props}
@@ -33,16 +31,15 @@ export default function Input({ label, className = "", ...props }: InputProps) {
           text-moon-contrast
           placeholder-transparent
           shadow-[0_10px_24px_rgba(47,42,40,0.05)]
-          focus:outline-none
-          focus:border-moon-rose-dark/50
-          focus:bg-moon-white
-          focus:shadow-[0_14px_30px_rgba(138,110,108,0.12)]
           transition-all
           duration-300
+          focus:border-moon-rose-dark/50
+          focus:bg-moon-white
+          focus:outline-none
+          focus:shadow-[0_14px_30px_rgba(138,110,108,0.12)]
         "
       />
 
-      {/* Oczko */}
       {props.type === "password" && (
         <button
           type="button"
@@ -54,11 +51,11 @@ export default function Input({ label, className = "", ...props }: InputProps) {
         </button>
       )}
 
-      {/* LABEL */}
       {label && (
         <label
           htmlFor={props.id || label}
           className="
+            pointer-events-none
             absolute
             left-4
             top-3.5
@@ -68,7 +65,6 @@ export default function Input({ label, className = "", ...props }: InputProps) {
             text-moon-rose-dark/85
             transition-all
             duration-200
-            pointer-events-none
             peer-placeholder-shown:top-3.5
             peer-placeholder-shown:text-base
             peer-focus:-top-2.5

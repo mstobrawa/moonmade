@@ -11,7 +11,6 @@ interface ProductGalleryProps {
 const PLACEHOLDER = "/placeholder.webp";
 
 export default function ProductGallery({ images, title }: ProductGalleryProps) {
-  // 🛡️ zabezpieczenia danych wejściowych
   const safeImages =
     Array.isArray(images) && images.length > 0 ? images : [PLACEHOLDER];
 
@@ -24,10 +23,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
 
   return (
     <div className="space-y-2.5 md:max-w-[22rem]">
-      {/* =====================
-          GŁÓWNE ZDJĘCIE
-         ===================== */}
-      <div className="relative w-full aspect-square overflow-hidden rounded-xl border border-[#e7ddd6] bg-[linear-gradient(180deg,rgba(250,245,240,0.96),rgba(231,216,206,0.68))] md:aspect-[4/5]">
+      <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-[#e7ddd6] bg-[linear-gradient(180deg,rgba(250,245,240,0.96),rgba(231,216,206,0.68))] md:aspect-[4/5]">
         <Image
           src={activeImage}
           alt={safeTitle}
@@ -39,34 +35,26 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
         />
       </div>
 
-      {/* =====================
-          MINIATURY
-         ===================== */}
       {safeImages.length > 1 && (
         <div className="flex justify-center gap-2 md:justify-start">
           {safeImages.map((img, index) => (
             <button
-              key={index}
+              key={`${img}-${index}`}
               type="button"
               onClick={() => setActiveImage(img)}
-              className={`relative h-14 w-14 overflow-hidden rounded-lg border shadow-sm transition-all duration-300 ease-out md:h-16 md:w-16
-                ${
-                  activeImage === img
-                    ? "border-moon-rose bg-moon-white/70 -translate-y-0.5"
-                    : "border-[#e7ddd6] bg-[#f6f1ed] hover:-translate-y-0.5 hover:border-moon-rose-light"
-                }`}
-              aria-label={`Pokaż zdjęcie ${index + 1}`}
+              className={`relative h-14 w-14 overflow-hidden rounded-lg border shadow-sm transition-all duration-300 ease-out md:h-16 md:w-16 ${
+                activeImage === img
+                  ? "border-moon-rose bg-moon-white/70 -translate-y-0.5"
+                  : "border-[#e7ddd6] bg-[#f6f1ed] hover:-translate-y-0.5 hover:border-moon-rose-light"
+              }`}
+              aria-label={`Pokaz zdjecie ${index + 1}`}
             >
               <Image
                 src={img}
-                alt={`${safeTitle} – zdjęcie ${index + 1}`}
+                alt={`${safeTitle} - zdjecie ${index + 1}`}
                 fill
                 className="object-cover"
                 sizes="80px"
-                onError={(e) => {
-                  // jeśli miniatura padnie → podmieniamy tylko ją wizualnie
-                  (e.target as HTMLImageElement).src = PLACEHOLDER;
-                }}
               />
             </button>
           ))}

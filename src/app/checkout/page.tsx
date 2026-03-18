@@ -14,13 +14,11 @@ const FREE_SHIPPING_THRESHOLD = 250;
 
 export default function CheckoutPage() {
   const { state, isHydrated } = useCart();
-
   const [step, setStep] = useState<Step>("form");
   const [shippingMethod, setShippingMethod] =
     useState<ShippingMethod>("locker");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -32,11 +30,8 @@ export default function CheckoutPage() {
     country: "Polska",
   });
 
-  /* =======================
-     STANY PODSTAWOWE
-     ======================= */
   if (!isHydrated) {
-    return <main className="p-6 text-center">Ładowanie…</main>;
+    return <main className="p-6 text-center">Ładowanie...</main>;
   }
 
   if (state.items.length === 0) {
@@ -44,7 +39,7 @@ export default function CheckoutPage() {
       <main className="flex min-h-[60vh] items-center justify-center px-6 py-12">
         <HeroCard className="text-center">
           <h1 className="mb-4 text-4xl font-semibold tracking-tight">
-            Twój koszyk jest pusty 🛒
+            Twój koszyk jest pusty
           </h1>
           <p className="mx-auto mb-8 max-w-2xl text-base leading-8 text-moon-contrast/74">
             Dodaj produkty do koszyka, aby przejść do bezpiecznej finalizacji
@@ -58,26 +53,18 @@ export default function CheckoutPage() {
     );
   }
 
-  /* =======================
-     CENY
-     ======================= */
   const productsTotal = state.items.reduce((sum, item) => sum + item.price, 0);
-
   const baseShippingCost = shippingMethod === "locker" ? 16.99 : 19.99;
   const shippingCost =
     productsTotal >= FREE_SHIPPING_THRESHOLD ? 0 : baseShippingCost;
-
   const total = productsTotal + shippingCost;
   const missingToFreeShipping = Math.max(
     0,
     FREE_SHIPPING_THRESHOLD - productsTotal,
   );
 
-  /* =======================
-     WALIDACJA
-     ======================= */
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
 
     if (!acceptedTerms) {
       alert("Musisz zaakceptować regulamin i politykę prywatności.");
@@ -85,7 +72,7 @@ export default function CheckoutPage() {
     }
 
     if (shippingMethod === "locker" && !LOCKER_REGEX.test(form.lockerCode)) {
-      alert("Podaj poprawny kod paczkomatu (np. WAW01A)");
+      alert("Podaj poprawny kod paczkomatu, np. WAW01A.");
       return;
     }
 
@@ -93,21 +80,18 @@ export default function CheckoutPage() {
       shippingMethod === "home" &&
       (!form.street || !form.postalCode || !form.city)
     ) {
-      alert("Uzupełnij pełny adres dostawy");
+      alert("Uzupełnij pełny adres dostawy.");
       return;
     }
 
     setStep("summary");
   };
 
-  /* =======================
-     ZAPIS + PŁATNOŚĆ
-     ======================= */
   const handleCreateOrder = async () => {
     try {
       setIsSubmitting(true);
 
-      const res = await fetch("/api/checkout", {
+      const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -119,31 +103,31 @@ export default function CheckoutPage() {
         }),
       });
 
-      const text = await res.text();
+      const text = await response.text();
 
-      if (!res.ok) {
-        alert("BŁĄD API:\n" + text);
+      if (!response.ok) {
+        alert(`Błąd API:\n${text}`);
         return;
       }
 
-      const data = JSON.parse(text);
+      const data = JSON.parse(text) as { paymentUrl?: string };
 
       if (!data.paymentUrl) {
-        alert("BRAK paymentUrl w odpowiedzi API");
+        alert("Brak paymentUrl w odpowiedzi API.");
         return;
       }
 
       window.location.href = data.paymentUrl;
-    } catch (err) {
-      console.error("JS ERROR:", err);
-      alert("Błąd przy przejściu do płatności");
+    } catch (error) {
+      console.error("CHECKOUT ERROR:", error);
+      alert("Wystąpił błąd przy przejściu do płatności.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-12 space-y-10 md:px-8 md:py-16">
+    <main className="mx-auto max-w-5xl space-y-10 px-6 py-12 md:px-8 md:py-16">
       <HeroCard>
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-moon-rose-dark">
           Moonmade Checkout
@@ -153,35 +137,31 @@ export default function CheckoutPage() {
         </h1>
       </HeroCard>
 
-      {/* =======================
-         KROK 1 — FORMULARZ
-         ======================= */}
       {step === "form" && (
         <>
-          {/* DOSTAWA */}
-          <section className="rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-6 shadow-sm space-y-4">
+          <section className="space-y-4 rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-6 shadow-sm">
             <h2 className="text-xl font-semibold">Dostawa</h2>
 
             <div
-              className={`border rounded-lg p-4 cursor-pointer transition ${
+              className={`cursor-pointer rounded-lg border p-4 transition ${
                 shippingMethod === "locker"
                   ? "border-moon-rose bg-moon-white/55"
                   : "border-[#dccfc7] bg-[#f8f1eb]"
               }`}
               onClick={() => setShippingMethod("locker")}
             >
-              Paczkomat InPost — 16,99 zł
+              Paczkomat InPost - 16,99 zł
             </div>
 
             <div
-              className={`border rounded-lg p-4 cursor-pointer transition ${
+              className={`cursor-pointer rounded-lg border p-4 transition ${
                 shippingMethod === "home"
                   ? "border-moon-rose bg-moon-white/55"
                   : "border-[#dccfc7] bg-[#f8f1eb]"
               }`}
               onClick={() => setShippingMethod("home")}
             >
-              Kurier — 19,99 zł
+              Kurier - 19,99 zł
             </div>
 
             {missingToFreeShipping > 0 && (
@@ -192,30 +172,29 @@ export default function CheckoutPage() {
             )}
           </section>
 
-          {/* FORMULARZ */}
           <form
             onSubmit={handleFormSubmit}
-            className="rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-6 shadow-sm space-y-4"
+            className="space-y-4 rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-6 shadow-sm"
           >
             <Input
               label="Imię i nazwisko"
               required
               value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              onChange={(event) => setForm({ ...form, name: event.target.value })}
             />
 
             <Input
               label="Adres e-mail"
               required
               value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              onChange={(event) => setForm({ ...form, email: event.target.value })}
             />
 
             <Input
               label="Numer telefonu"
               required
               value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              onChange={(event) => setForm({ ...form, phone: event.target.value })}
             />
 
             {shippingMethod === "locker" && (
@@ -224,10 +203,10 @@ export default function CheckoutPage() {
                   label="Kod paczkomatu InPost"
                   required
                   value={form.lockerCode}
-                  onChange={(e) =>
+                  onChange={(event) =>
                     setForm({
                       ...form,
-                      lockerCode: e.target.value.toUpperCase(),
+                      lockerCode: event.target.value.toUpperCase(),
                     })
                   }
                 />
@@ -252,15 +231,17 @@ export default function CheckoutPage() {
                   label="Ulica i numer"
                   required
                   value={form.street}
-                  onChange={(e) => setForm({ ...form, street: e.target.value })}
+                  onChange={(event) =>
+                    setForm({ ...form, street: event.target.value })
+                  }
                 />
 
                 <Input
                   label="Kod pocztowy"
                   required
                   value={form.postalCode}
-                  onChange={(e) =>
-                    setForm({ ...form, postalCode: e.target.value })
+                  onChange={(event) =>
+                    setForm({ ...form, postalCode: event.target.value })
                   }
                 />
 
@@ -268,17 +249,16 @@ export default function CheckoutPage() {
                   label="Miasto"
                   required
                   value={form.city}
-                  onChange={(e) => setForm({ ...form, city: e.target.value })}
+                  onChange={(event) => setForm({ ...form, city: event.target.value })}
                 />
               </>
             )}
 
-            {/* CHECKBOX — REGULAMIN */}
             <div className="flex items-start gap-3 text-sm text-moon-contrast">
               <input
                 type="checkbox"
                 checked={acceptedTerms}
-                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                onChange={(event) => setAcceptedTerms(event.target.checked)}
                 className="mt-1"
               />
               <p>
@@ -309,11 +289,8 @@ export default function CheckoutPage() {
         </>
       )}
 
-      {/* =======================
-         KROK 2 — PODSUMOWANIE
-         ======================= */}
       {step === "summary" && (
-        <section className="rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-6 shadow-sm space-y-6">
+        <section className="space-y-6 rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-6 shadow-sm">
           <h2 className="text-2xl font-semibold">Podsumowanie zamówienia</h2>
 
           <div className="space-y-3">
@@ -363,7 +340,7 @@ export default function CheckoutPage() {
               disabled={isSubmitting}
               onClick={handleCreateOrder}
             >
-              {isSubmitting ? "Przetwarzanie…" : "Przejdź do płatności"}
+              {isSubmitting ? "Przetwarzanie..." : "Przejdź do płatności"}
             </Button>
           </div>
         </section>

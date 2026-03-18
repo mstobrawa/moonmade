@@ -1,4 +1,3 @@
-// src/app/ui/MenuItem.tsx
 "use client";
 
 import Link from "next/link";
@@ -24,21 +23,18 @@ export default function MenuItem({
     <Link
       href={href}
       onClick={onClick}
-      className={`moon-nav-text group relative py-2 text-[0.72rem] transition-all duration-300 ease-out
-        ${
-          isActive
-            ? "text-moon-rose-dark"
-            : "text-moon-contrast/78 hover:text-moon-contrast"
-        }
-        ${className}`}
+      className={`moon-nav-text group relative py-2 text-[0.72rem] transition-all duration-300 ease-out ${
+        isActive
+          ? "text-moon-rose-dark"
+          : "text-moon-contrast/78 hover:text-moon-contrast"
+      } ${className}`}
     >
       {label}
-
-      {/* animowane podkreślenie - transform (scaleX) daje płynny efekt od środka */}
       <span
         aria-hidden
-        className={`absolute inset-x-0 -bottom-[2px] h-[1px] rounded-full bg-moon-rose transform origin-center transition-transform duration-300 ease-out
-          ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+        className={`absolute inset-x-0 -bottom-[2px] h-[1px] origin-center rounded-full bg-moon-rose transition-transform duration-300 ease-out ${
+          isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+        }`}
       />
     </Link>
   );

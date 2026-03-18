@@ -26,23 +26,19 @@ export default function Textarea({
         {...props}
         rows={rows}
         placeholder=" "
-        className={`peer w-full rounded-xl p-3 bg-transparent text-moon-contrast border-2 transition focus:outline-none
-
-          ${
-            error
-              ? "border-red-500"
-              : "border-moon-contrast focus:border-moon-rose-dark"
-          }
-          ${
-            resize === "none"
-              ? "resize-none"
-              : resize === "x"
+        className={`peer w-full rounded-xl border-2 bg-transparent p-3 text-moon-contrast transition focus:outline-none ${
+          error
+            ? "border-red-500"
+            : "border-moon-contrast focus:border-moon-rose-dark"
+        } ${
+          resize === "none"
+            ? "resize-none"
+            : resize === "x"
               ? "resize-x"
               : resize === "both"
-              ? "resize"
-              : "resize-y"
-          }
-        `}
+                ? "resize"
+                : "resize-y"
+        }`}
       />
       <label
         htmlFor={props.id || label}
@@ -56,7 +52,7 @@ export default function Textarea({
         {label}
       </label>
 
-      {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
+      {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
     </div>
   );
 }

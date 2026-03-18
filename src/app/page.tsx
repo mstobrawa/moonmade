@@ -1,10 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import HeroCard from "./ui/HeroCard";
 
-export const metadata = {
-  title: "Moonmade – ręcznie tworzona biżuteria z kamieni naturalnych",
+export const metadata: Metadata = {
+  title: "Strona główna",
   description:
     "Moonmade to unikatowa, ręcznie tworzona biżuteria z naturalnych kamieni. Każdy egzemplarz powstaje z pasji i miłości do detalu.",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function HomePage() {
@@ -20,7 +24,7 @@ export default function HomePage() {
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-moon-contrast/76">
-          Każdy naszyjnik i każda bransoletka tworzone są ręcznie – z pasji,
+          Każdy naszyjnik i każda bransoletka tworzone są ręcznie - z pasji,
           cierpliwości i wrażliwości na piękno natury.
         </p>
 
@@ -28,7 +32,7 @@ export default function HomePage() {
           Szlachetne <span className="font-semibold">ametysty</span>, ciepłe{" "}
           <span className="font-semibold">karneole</span>, spokojne{" "}
           <span className="font-semibold">labradoryty</span> i energetyczne{" "}
-          <span className="font-semibold">jaspisy</span> – każdy kamień opowiada
+          <span className="font-semibold">jaspisy</span> - każdy kamień opowiada
           własną historię, a razem tworzą niepowtarzalną harmonię w naszych
           kolekcjach.
         </p>
@@ -49,7 +53,7 @@ export default function HomePage() {
         </p>
 
         <p className="mt-6 text-sm tracking-[0.2em] text-moon-rose-dark">
-          Moonmade — z miłości do kamieni 🌙
+          Moonmade - z miłości do kamieni
         </p>
       </HeroCard>
     </main>

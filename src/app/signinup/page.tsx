@@ -15,9 +15,7 @@ export default function SignInUpPage() {
           </h1>
         </HeroCard>
 
-        {/* Grid: mobile -> stacked, desktop -> two columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Login panel */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <HeroCard className="h-full">
             <div className="mb-4">
               <h2 className="text-xl font-semibold text-moon-contrast">
@@ -30,7 +28,6 @@ export default function SignInUpPage() {
             <LoginForm />
           </HeroCard>
 
-          {/* Register panel */}
           <HeroCard className="h-full">
             <div className="mb-4">
               <h2 className="text-xl font-semibold text-moon-contrast">

@@ -1,8 +1,5 @@
-"use client";
-
-import Image from "next/image";
 import Button from "./Button";
-import { useState } from "react";
+import ProductCardImage from "./ProductCardImage";
 
 export interface StorefrontProduct {
   id: string;
@@ -18,25 +15,12 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const [imgSrc, setImgSrc] = useState(
-    product.images?.[0] || "/placeholder.webp",
-  );
-
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#e7ddd6] bg-linear-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-3 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#d8cbc2] hover:shadow-[0_14px_28px_rgba(47,42,40,0.08)]">
-      {/* 🖼️ ZDJĘCIE */}
       <div className="relative mb-3 aspect-4/3 w-full flex-none overflow-hidden rounded-lg border border-[#e7ddd6]/90 bg-[linear-gradient(180deg,rgba(250,245,240,0.96),rgba(231,216,206,0.68))]">
-        <Image
-          src={imgSrc}
-          alt={product.title}
-          fill
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          onError={() => setImgSrc("/placeholder.webp")}
-        />
+        <ProductCardImage src={product.images?.[0]} alt={product.title} />
       </div>
 
-      {/* 📄 TREŚĆ */}
       <h3 className="mb-1 text-base font-semibold leading-tight text-moon-contrast">
         {product.title}
       </h3>
@@ -49,7 +33,6 @@ export default function ProductCard({ product }: ProductCardProps) {
         {product.price} zł
       </p>
 
-      {/* CTA */}
       <div className="mt-auto">
         <Button
           as="a"

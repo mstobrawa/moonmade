@@ -41,11 +41,9 @@ export default function Button({
     lg: "px-7 py-3.5 text-base sm:text-lg",
   };
 
-  // 🔑 Wykrywamy disabled z propsów
   const isDisabled = props.disabled;
-
   const disabledStyles = isDisabled
-    ? "opacity-50 cursor-not-allowed pointer-events-none"
+    ? "cursor-not-allowed pointer-events-none opacity-50"
     : "";
 
   const allClasses = clsx(

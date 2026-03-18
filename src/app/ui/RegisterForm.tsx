@@ -4,12 +4,7 @@ import React, { useState } from "react";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 
-/**
- * Rejestracja: prosty formularz z walidacją (client-side).
- */
 export default function RegisterForm() {
-  // ---------- STANY ----------
-  // trzymamy wartości pól formularza
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -17,52 +12,39 @@ export default function RegisterForm() {
     password: "",
     confirmPassword: "",
   });
-
-  // trzymamy błędy - klucz = nazwa pola, wartość = komunikat
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  // flaga wysyłania (opcjonalna, można użyć do disable przycisku)
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // ---------- HELPERY / WALIDACJA ----------
-  // prosty regex na e-mail (wystarczający dla większości form)
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // funkcja, która sprawdza wszystkie pola i zwraca obiekt błędów
   function validateAll(values: typeof form) {
-    const e: Record<string, string> = {};
+    const nextErrors: Record<string, string> = {};
 
-    // firstName / lastName - wymagane
-    if (!values.firstName.trim()) e.firstName = "Imię jest wymagane.";
-    if (!values.lastName.trim()) e.lastName = "Nazwisko jest wymagane.";
+    if (!values.firstName.trim()) nextErrors.firstName = "Imię jest wymagane.";
+    if (!values.lastName.trim()) nextErrors.lastName = "Nazwisko jest wymagane.";
 
-    // email - wymagany i matching regex
-    if (!values.email.trim()) e.email = "E-mail jest wymagany.";
+    if (!values.email.trim()) nextErrors.email = "E-mail jest wymagany.";
     else if (!emailRegex.test(values.email))
-      e.email = "Nieprawidłowy format e-mail.";
+      nextErrors.email = "Nieprawidłowy format e-mail.";
 
-    // password - wymagane i min długość
-    if (!values.password) e.password = "Hasło jest wymagane.";
+    if (!values.password) nextErrors.password = "Hasło jest wymagane.";
     else if (values.password.length < 8)
-      e.password = "Hasło musi mieć co najmniej 8 znaków.";
+      nextErrors.password = "Hasło musi mieć co najmniej 8 znaków.";
 
-    // confirmPassword - wymagane i równość
-    if (!values.confirmPassword) e.confirmPassword = "Potwierdź hasło.";
+    if (!values.confirmPassword)
+      nextErrors.confirmPassword = "Potwierdź hasło.";
     else if (values.password !== values.confirmPassword)
-      e.confirmPassword = "Hasła nie są identyczne.";
+      nextErrors.confirmPassword = "Hasła nie są identyczne.";
 
-    return e;
+    return nextErrors;
   }
 
-  // ---------- HANDLERY ----------
-  // update stanu formularza przy zmianie inputa
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    // opcjonalnie: możemy czyścić błąd pojedynczego pola przy zmianie
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
-  // obsługa przysiskiu resetu formularza
+
   const handleReset = () => {
     setForm({
       firstName: "",
@@ -74,37 +56,25 @@ export default function RegisterForm() {
     setErrors({});
   };
 
-  // obsługa submitu: walidacja -> jeśli ok, dalsze akcje
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // ochrona przed wielokrotnym kliknięciem
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
     if (isSubmitting) return;
 
     const validation = validateAll(form);
     setErrors(validation);
 
-    // jeśli są błędy - przerywamy
     if (Object.keys(validation).length > 0) return;
 
-    // symulacja wysyłania / dalszej logiki
     setIsSubmitting(true);
-    // na razie tylko logujemy — tutaj podłączysz fetch/do API
-    console.log("✅ Formularz gotowy do wysyłki:", form);
+    console.log("Formularz gotowy do wysylki:", form);
 
-    // symulujemy krótkie zakończenie (jeszcze bez backendu)
     setTimeout(() => {
       setIsSubmitting(false);
-      // opcjonalnie wyczyść formularz po sukcesie:
-      // setForm({ firstName: "", lastName: "", email: "", password: "", confirmPassword: "" });
     }, 600);
   };
 
-  // ---------- RENDER ----------
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full max-w-md flex flex-col gap-4"
-    >
+    <form onSubmit={handleSubmit} className="flex w-full max-w-md flex-col gap-4">
       <div>
         <Input
           label="Imię"
@@ -116,7 +86,7 @@ export default function RegisterForm() {
           required
         />
         {errors.firstName && (
-          <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+          <p className="mt-1 text-sm text-red-500">{errors.firstName}</p>
         )}
       </div>
 
@@ -131,7 +101,7 @@ export default function RegisterForm() {
           required
         />
         {errors.lastName && (
-          <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+          <p className="mt-1 text-sm text-red-500">{errors.lastName}</p>
         )}
       </div>
 
@@ -146,7 +116,7 @@ export default function RegisterForm() {
           required
         />
         {errors.email && (
-          <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+          <p className="mt-1 text-sm text-red-500">{errors.email}</p>
         )}
       </div>
 
@@ -161,7 +131,7 @@ export default function RegisterForm() {
           required
         />
         {errors.password && (
-          <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+          <p className="mt-1 text-sm text-red-500">{errors.password}</p>
         )}
       </div>
 
@@ -176,7 +146,7 @@ export default function RegisterForm() {
           required
         />
         {errors.confirmPassword && (
-          <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+          <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>
         )}
       </div>
 

@@ -47,7 +47,6 @@ export default function ProductDetailView({
     [galleryImages],
   );
 
-  const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const showPrevious = useCallback(
     () => showImageAt(activeIndex - 1),
@@ -84,7 +83,7 @@ export default function ProductDetailView({
         <div className="md:max-w-[18.75rem]">
           <button
             type="button"
-            onClick={openModal}
+            onClick={() => setIsModalOpen(true)}
             className="group relative block aspect-square w-full overflow-hidden rounded-xl border border-[#e7ddd6] bg-[linear-gradient(180deg,rgba(250,245,240,0.96),rgba(231,216,206,0.68))] text-left transition-all duration-300 ease-out hover:border-[#d8cbc2] md:aspect-[4/5.4]"
             aria-label="Powieksz zdjecie produktu"
           >

@@ -1,9 +1,13 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import StaticPageLayout from "@/app/ui/StaticPageLayout";
 
-export const metadata = {
-  title: "Płatności | Moonmade",
+export const metadata: Metadata = {
+  title: "Płatności",
   description: "Informacje o dostępnych metodach płatności w sklepie Moonmade.",
+  alternates: {
+    canonical: "/payment",
+  },
 };
 
 export default function PaymentsPage() {
@@ -22,7 +26,7 @@ export default function PaymentsPage() {
 
         <Image
           src="/bankpay.webp"
-          alt="Autopay – bezpieczne płatności online"
+          alt="Autopay - bezpieczne płatności online"
           width={550}
           height={160}
           className="opacity-90 drop-shadow-[0_10px_24px_rgba(47,42,40,0.08)]"

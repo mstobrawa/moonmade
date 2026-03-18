@@ -1,8 +1,12 @@
+import type { Metadata } from "next";
 import StaticPageLayout from "@/app/ui/StaticPageLayout";
 
-export const metadata = {
-  title: "Kontakt | Moonmade",
-  description: "Skontaktuj się z nami – Moonmade",
+export const metadata: Metadata = {
+  title: "Kontakt",
+  description: "Skontaktuj się z Moonmade w sprawie biżuterii i zamówień.",
+  alternates: {
+    canonical: "/contact",
+  },
 };
 
 export default function ContactPage() {
@@ -25,7 +29,7 @@ export default function ContactPage() {
       </p>
 
       <p className="text-sm tracking-[0.16em] text-moon-rose-dark">
-        Odpowiadamy zazwyczaj w ciągu 24 godzin 🌙
+        Odpowiadamy zazwyczaj w ciągu 24 godzin
       </p>
     </StaticPageLayout>
   );

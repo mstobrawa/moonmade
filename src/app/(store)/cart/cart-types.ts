@@ -1,15 +1,15 @@
-export type CartItem = {
+export interface CartItem {
   id: string;
   title: string;
-  price: number; // np. w groszach (24900) — łatwiej liczyć
+  price: number;
   image?: string;
-};
+}
 
-export type CartState = {
+export interface CartState {
   items: CartItem[];
-};
+}
 
 export type CartAction =
   | { type: "ADD_ITEM"; payload: CartItem }
-  | { type: "REMOVE_ITEM"; payload: { id: string } } // usuń po id
-  | { type: "CLEAR" }; // wyczyść koszyk
+  | { type: "REMOVE_ITEM"; payload: { id: string } }
+  | { type: "CLEAR" };

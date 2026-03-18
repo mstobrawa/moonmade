@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import ProductsGrid from "../ui/ProductsGrid";
 import { supabaseServer as supabase } from "@/lib/supabase/server";
 
@@ -8,6 +9,21 @@ type StoreProduct = {
   price: number;
   description: string;
   images: string[];
+};
+
+export const metadata: Metadata = {
+  title: "Produkty",
+  description:
+    "Poznaj kolekcję Moonmade: ręcznie tworzone naszyjniki i bransoletki z kamieni naturalnych.",
+  alternates: {
+    canonical: "/products",
+  },
+  openGraph: {
+    title: "Produkty | Moonmade",
+    description:
+      "Kolekcja unikatowej biżuterii Moonmade tworzonej ręcznie z naturalnych kamieni.",
+    url: "/products",
+  },
 };
 
 export const revalidate = 60;
@@ -42,6 +58,14 @@ export default async function ProductPage() {
 
   return (
     <main className="mx-auto w-full max-w-275 px-6 py-4">
+      <header className="sr-only">
+        <h1>Produkty Moonmade</h1>
+        <p>
+          Ręcznie tworzona biżuteria z kamieni naturalnych dostępna w krótkich,
+          unikatowych seriach.
+        </p>
+      </header>
+
       <ProductsGrid products={normalizedProducts} />
     </main>
   );

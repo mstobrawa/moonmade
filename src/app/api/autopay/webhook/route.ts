@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseServer as supabase } from "@/lib/supabase/server";
 
-/**
- * Struktura itemu zapisanego w orders.items (jsonb)
- * zgodna z tym co masz realnie w bazie
- */
 interface OrderItem {
   id: string;
   title: string;
@@ -15,13 +11,6 @@ interface OrderItem {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-
-    /**
-     * W wersji docelowej Autopay:
-     * - order_id -> ID zamówienia (uuid)
-     * - status   -> SUCCESS | FAILED | CANCELLED
-     * - payment_id -> ID transakcji u operatora
-     */
     const { order_id, status, payment_id } = body;
 
     if (!order_id || !status) {
@@ -31,14 +20,10 @@ export async function POST(req: Request) {
       );
     }
 
-    // Obsługujemy tylko sukces
     if (status !== "SUCCESS") {
       return NextResponse.json({ ok: true, ignored: true });
     }
 
-    /* =========================
-       1️⃣ Pobierz zamówienie
-       ========================= */
     const { data: order, error: orderError } = await supabase
       .from("orders")
       .select("id, items")
@@ -48,14 +33,11 @@ export async function POST(req: Request) {
     if (orderError || !order) {
       console.error("ORDER NOT FOUND:", orderError);
       return NextResponse.json(
-        { error: "Zamówienie nie istnieje" },
+        { error: "Zamowienie nie istnieje" },
         { status: 404 },
       );
     }
 
-    /* =========================
-       2️⃣ Oznacz zamówienie jako opłacone
-       ========================= */
     const { error: updateOrderError } = await supabase
       .from("orders")
       .update({
@@ -69,14 +51,11 @@ export async function POST(req: Request) {
     if (updateOrderError) {
       console.error("ORDER UPDATE ERROR:", updateOrderError);
       return NextResponse.json(
-        { error: "Nie udało się zaktualizować zamówienia" },
+        { error: "Nie udalo sie zaktualizowac zamowienia" },
         { status: 500 },
       );
     }
 
-    /* =========================
-       3️⃣ Zablokuj kupione produkty
-       ========================= */
     const items = order.items as OrderItem[];
     const productIds = items.map((item) => item.id);
 
@@ -89,18 +68,15 @@ export async function POST(req: Request) {
       if (productsError) {
         console.error("PRODUCT UPDATE ERROR:", productsError);
         return NextResponse.json(
-          { error: "Nie udało się zablokować produktów" },
+          { error: "Nie udalo sie zablokowac produktow" },
           { status: 500 },
         );
       }
     }
 
-    /* =========================
-       4️⃣ OK
-       ========================= */
     return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error("WEBHOOK ERROR:", err);
-    return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });
+  } catch (error) {
+    console.error("WEBHOOK ERROR:", error);
+    return NextResponse.json({ error: "Blad serwera" }, { status: 500 });
   }
 }

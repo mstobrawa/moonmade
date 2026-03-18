@@ -16,13 +16,12 @@ export default function PaymentSuccessPage({ searchParams }: SuccessPageProps) {
   const orderId = searchParams.order;
 
   return (
-    <main className="min-h-[70vh] flex items-center justify-center px-6">
+    <main className="flex min-h-[70vh] items-center justify-center px-6">
       <HeroCard className="max-w-3xl text-center">
-        {/* 🔥 TO CZYŚCI KOSZYK (CLIENT) */}
         <ClearCartClient />
 
         <h1 className="text-4xl font-semibold tracking-tight text-moon-contrast">
-          Dziękujemy za zamówienie 💖
+          Dziękujemy za zamówienie
         </h1>
 
         <p className="text-base leading-8 text-moon-contrast/74">

@@ -1,4 +1,3 @@
-// src/app/ui/Badge.tsx
 import React from "react";
 import clsx from "clsx";
 
@@ -22,9 +21,9 @@ export default function Badge({
   return (
     <span
       className={clsx(
-        "inline-flex items-center justify-center min-w-[20px] h-[20px] rounded-full text-[11px] font-semibold px-1.5",
+        "inline-flex h-[20px] min-w-[20px] items-center justify-center rounded-full px-1.5 text-[11px] font-semibold",
         variantClass,
-        className
+        className,
       )}
     >
       {children}

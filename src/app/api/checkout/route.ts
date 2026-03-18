@@ -4,10 +4,8 @@ import { supabaseServer as supabase } from "@/lib/supabase/server";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-
     const { customer, items, shippingMethod, shippingCost, total } = body;
 
-    // Minimalna walidacja
     if (
       !customer?.name ||
       !customer?.email ||
@@ -16,7 +14,7 @@ export async function POST(req: Request) {
       items.length === 0
     ) {
       return NextResponse.json(
-        { error: "Niepoprawne dane zamówienia" },
+        { error: "Niepoprawne dane zamowienia" },
         { status: 400 },
       );
     }
@@ -65,8 +63,8 @@ export async function POST(req: Request) {
       },
       { status: 201 },
     );
-  } catch (err) {
-    console.error("API ERROR:", err);
-    return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });
+  } catch (error) {
+    console.error("API ERROR:", error);
+    return NextResponse.json({ error: "Blad serwera" }, { status: 500 });
   }
 }

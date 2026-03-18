@@ -20,15 +20,15 @@ const initial: CartState = { items: [] };
 function reducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case "ADD_ITEM": {
-      const exists = state.items.some((i) => i.id === action.payload.id);
-      if (exists) return state; // 🛑 unikat już w koszyku
+      const exists = state.items.some((item) => item.id === action.payload.id);
+      if (exists) return state;
       return { ...state, items: [...state.items, action.payload] };
     }
 
     case "REMOVE_ITEM":
       return {
         ...state,
-        items: state.items.filter((i) => i.id !== action.payload.id),
+        items: state.items.filter((item) => item.id !== action.payload.id),
       };
 
     case "CLEAR":
@@ -49,11 +49,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (raw) {
         const parsed = JSON.parse(raw) as CartState;
         parsed.items.forEach((item) =>
-          dispatch({ type: "ADD_ITEM", payload: item })
+          dispatch({ type: "ADD_ITEM", payload: item }),
         );
       }
-    } catch (e) {
-      console.warn("Nie udało się wczytać koszyka:", e);
+    } catch (error) {
+      console.warn("Nie udalo sie wczytac koszyka:", error);
     } finally {
       setIsHydrated(true);
     }

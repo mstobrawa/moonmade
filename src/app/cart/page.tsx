@@ -6,15 +6,12 @@ import { useCart } from "@/app/(store)/cart/CartContext";
 import Button from "../ui/Button";
 import HeroCard from "../ui/HeroCard";
 
-function formatPrice(n: number) {
-  return n.toFixed(2).replace(".", ",") + " zł";
+function formatPrice(value: number) {
+  return `${value.toFixed(2).replace(".", ",")} zł`;
 }
 
 const PLACEHOLDER = "/placeholder.webp";
 
-/* ======================
-   POJEDYNCZY ITEM KOSZYKA
-   ====================== */
 function CartItem({
   item,
   onRemove,
@@ -31,7 +28,6 @@ function CartItem({
 
   return (
     <div className="flex items-center gap-4 rounded-xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-4 shadow-sm">
-      {/* 🖼️ miniaturka */}
       <div className="relative h-20 w-20 overflow-hidden rounded-lg border border-[#e7ddd6] bg-[linear-gradient(180deg,rgba(250,245,240,0.96),rgba(231,216,206,0.68))]">
         <Image
           src={imgSrc}
@@ -46,7 +42,7 @@ function CartItem({
       <div className="flex-1">
         <h3 className="text-lg font-semibold text-moon-contrast">{item.title}</h3>
         <p className="text-sm tracking-[0.04em] text-moon-rose-dark">
-          Unikat – dostępna 1 sztuka
+          Unikat - dostępna 1 sztuka
         </p>
       </div>
 
@@ -65,9 +61,6 @@ function CartItem({
   );
 }
 
-/* ======================
-   STRONA KOSZYKA
-   ====================== */
 export default function CartPage() {
   const { state, dispatch, isHydrated } = useCart();
 
@@ -80,7 +73,7 @@ export default function CartPage() {
       <main className="flex min-h-[60vh] items-center justify-center px-6 py-12">
         <HeroCard className="text-center">
           <h1 className="mb-4 text-4xl font-semibold tracking-tight text-moon-contrast">
-            Twój koszyk jest pusty 🛒
+            Twój koszyk jest pusty
           </h1>
 
           <p className="mx-auto mb-8 max-w-2xl text-base leading-8 text-moon-contrast/74">
@@ -106,7 +99,6 @@ export default function CartPage() {
       </HeroCard>
 
       <div className="flex flex-col gap-6 md:flex-row md:items-start">
-        {/* 🧺 Lista produktów */}
         <section className="flex-1 space-y-4">
           {state.items.map((item) => (
             <CartItem
@@ -122,11 +114,10 @@ export default function CartPage() {
           ))}
         </section>
 
-        {/* 💰 Podsumowanie */}
         <aside className="w-full rounded-2xl border border-[#e7ddd6] bg-gradient-to-r from-[#faf6f1] via-[#faebda] to-[#f2e1d6] p-6 shadow-sm md:w-1/3">
-          <h2 className="text-xl font-semibold mb-4">Podsumowanie</h2>
+          <h2 className="mb-4 text-xl font-semibold">Podsumowanie</h2>
 
-          <p className="text-lg mb-4">
+          <p className="mb-4 text-lg">
             Razem: <span className="font-bold">{formatPrice(totalPrice)}</span>
           </p>
 

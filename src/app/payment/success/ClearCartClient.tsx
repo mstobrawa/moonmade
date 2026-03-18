@@ -8,10 +8,7 @@ export default function ClearCartClient() {
   const clearedRef = useRef(false);
 
   useEffect(() => {
-    // czekamy aż koszyk się załaduje z localStorage
     if (!isHydrated) return;
-
-    // zabezpieczenie: wykonaj CLEAR tylko raz
     if (clearedRef.current) return;
 
     dispatch({ type: "CLEAR" });
