@@ -36,8 +36,9 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
       onClick={handleAddToCart}
       disabled={isInCart}
       className="w-full shadow-[0_12px_26px_rgba(138,110,108,0.14)]"
+      size="sm"
     >
-      {isInCart ? "Dodano do koszyka ✓" : "Dodaj do koszyka"}
+      {isInCart ? "Dodano do koszyka" : "Dodaj do koszyka"}
     </Button>
   );
 }

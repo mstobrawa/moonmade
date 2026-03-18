@@ -44,7 +44,7 @@ export default async function ProductPage() {
   );
 
   return (
-    <main className="mx-auto w-full max-w-[1100px] px-6 py-6">
+    <main className="mx-auto w-full max-w-275 px-6 py-6">
       <HeroCard className="mb-6">
         <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-moon-rose-dark">
           Kolekcja Moonmade

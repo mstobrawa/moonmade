@@ -23,7 +23,7 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
   const [activeImage, setActiveImage] = useState<string>(safeImages[0]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2.5 md:max-w-[22rem]">
       {/* =====================
           GŁÓWNE ZDJĘCIE
          ===================== */}
@@ -43,13 +43,13 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
           MINIATURY
          ===================== */}
       {safeImages.length > 1 && (
-        <div className="flex justify-center gap-3 md:justify-start">
+        <div className="flex justify-center gap-2 md:justify-start">
           {safeImages.map((img, index) => (
             <button
               key={index}
               type="button"
               onClick={() => setActiveImage(img)}
-              className={`relative h-20 w-20 overflow-hidden rounded-xl border shadow-sm transition-all duration-300 ease-out
+              className={`relative h-14 w-14 overflow-hidden rounded-lg border shadow-sm transition-all duration-300 ease-out md:h-16 md:w-16
                 ${
                   activeImage === img
                     ? "border-moon-rose bg-moon-white/70 -translate-y-0.5"
