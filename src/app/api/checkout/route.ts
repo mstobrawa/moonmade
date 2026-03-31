@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { supabaseServer as supabase } from "@/lib/supabase/server";
 
+type CheckoutItem = {
+  id?: unknown;
+};
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -54,6 +58,22 @@ export async function POST(req: Request) {
     if (error) {
       console.error("SUPABASE INSERT ERROR:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    const productIds = items
+      .map((item: CheckoutItem) => String(item?.id ?? "").trim())
+      .filter(Boolean);
+    const uniqueProductIds = [...new Set(productIds)];
+
+    if (uniqueProductIds.length > 0) {
+      const { error: productUpdateError } = await supabase
+        .from("products")
+        .update({ is_available: false })
+        .in("id", uniqueProductIds);
+
+      if (productUpdateError) {
+        console.error("PRODUCT AVAILABILITY UPDATE ERROR:", productUpdateError);
+      }
     }
 
     return NextResponse.json(

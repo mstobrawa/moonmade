@@ -1,13 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseServer as supabase } from "@/lib/supabase/server";
 
-interface OrderItem {
-  id: string;
-  title: string;
-  price: number;
-  image?: string;
-}
-
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -26,7 +19,7 @@ export async function POST(req: Request) {
 
     const { data: order, error: orderError } = await supabase
       .from("orders")
-      .select("id, items")
+      .select("id, status")
       .eq("id", order_id)
       .single();
 
@@ -36,6 +29,10 @@ export async function POST(req: Request) {
         { error: "Zamowienie nie istnieje" },
         { status: 404 },
       );
+    }
+
+    if (order.status === "paid") {
+      return NextResponse.json({ ok: true, ignored: true });
     }
 
     const { error: updateOrderError } = await supabase
@@ -54,24 +51,6 @@ export async function POST(req: Request) {
         { error: "Nie udalo sie zaktualizowac zamowienia" },
         { status: 500 },
       );
-    }
-
-    const items = order.items as OrderItem[];
-    const productIds = items.map((item) => item.id);
-
-    if (productIds.length > 0) {
-      const { error: productsError } = await supabase
-        .from("products")
-        .update({ is_available: false })
-        .in("id", productIds);
-
-      if (productsError) {
-        console.error("PRODUCT UPDATE ERROR:", productsError);
-        return NextResponse.json(
-          { error: "Nie udalo sie zablokowac produktow" },
-          { status: 500 },
-        );
-      }
     }
 
     return NextResponse.json({ ok: true });
