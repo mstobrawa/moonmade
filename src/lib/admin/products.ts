@@ -10,6 +10,25 @@ export function hasMissingOriginalPriceColumn(message?: string | null) {
   return message?.includes("column products.original_price does not exist") ?? false;
 }
 
+type LegacyAdminProduct = {
+  id: unknown;
+  slug: unknown;
+  title: unknown;
+  description: unknown;
+  price: unknown;
+  images: unknown;
+  is_available: unknown;
+  position: unknown;
+  created_at?: unknown;
+};
+
+export function withNullableOriginalPrice<T extends LegacyAdminProduct>(product: T) {
+  return {
+    ...product,
+    original_price: null,
+  };
+}
+
 export async function getNextProductPosition() {
   const { data, error } = await supabaseServer
     .from("products")

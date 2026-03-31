@@ -5,6 +5,7 @@ import {
   hasMissingOriginalPriceColumn,
   LEGACY_PRODUCT_SELECT,
   PRODUCT_SELECT,
+  withNullableOriginalPrice,
 } from "@/lib/admin/products";
 import { supabaseServer } from "@/lib/supabase/server";
 import { getAdminSessionFromRequest } from "@/lib/admin/auth";
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let insertQuery = supabaseServer
+    const insertQuery = supabaseServer
       .from("products")
       .insert({
         title,
@@ -85,7 +86,7 @@ export async function POST(request: NextRequest) {
     let { data, error } = await insertQuery;
 
     if (hasMissingOriginalPriceColumn(error?.message)) {
-      insertQuery = supabaseServer
+      const legacyInsertQuery = supabaseServer
         .from("products")
         .insert({
           title,
@@ -99,7 +100,11 @@ export async function POST(request: NextRequest) {
         .select(LEGACY_PRODUCT_SELECT)
         .single();
 
-      ({ data, error } = await insertQuery);
+      const legacyInsertResult = await legacyInsertQuery;
+      data = legacyInsertResult.data
+        ? withNullableOriginalPrice(legacyInsertResult.data)
+        : legacyInsertResult.data;
+      error = legacyInsertResult.error;
     }
 
     if (error) {

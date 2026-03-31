@@ -1,5 +1,8 @@
 import type { MetadataRoute } from "next";
-import { supabaseServer } from "@/lib/supabase/server";
+import {
+  getSupabaseServer,
+  isSupabaseServerConfigured,
+} from "@/lib/supabase/server";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://moonmade.pl";
@@ -24,6 +27,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === "" ? 1 : route === "/products" ? 0.9 : 0.7,
   }));
 
+  if (!isSupabaseServerConfigured()) {
+    return staticEntries;
+  }
+
+  const supabaseServer = getSupabaseServer();
   const { data: products } = await supabaseServer
     .from("products")
     .select("slug, updated_at, created_at")

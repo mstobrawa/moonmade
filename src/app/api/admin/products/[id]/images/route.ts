@@ -4,6 +4,7 @@ import {
   hasMissingOriginalPriceColumn,
   LEGACY_PRODUCT_SELECT,
   PRODUCT_SELECT,
+  withNullableOriginalPrice,
 } from "@/lib/admin/products";
 import { supabaseServer } from "@/lib/supabase/server";
 import { getAdminSessionFromRequest } from "@/lib/admin/auth";
@@ -109,7 +110,7 @@ export async function POST(
       ...uploadedUrls,
     ];
 
-    let updateQuery = supabaseServer
+    const updateQuery = supabaseServer
       .from("products")
       .update({ images: nextImages })
       .eq("id", id)
@@ -119,14 +120,18 @@ export async function POST(
     let { data: updatedProduct, error: updateError } = await updateQuery;
 
     if (hasMissingOriginalPriceColumn(updateError?.message)) {
-      updateQuery = supabaseServer
+      const legacyUpdateQuery = supabaseServer
         .from("products")
         .update({ images: nextImages })
         .eq("id", id)
         .select(LEGACY_PRODUCT_SELECT)
         .single();
 
-      ({ data: updatedProduct, error: updateError } = await updateQuery);
+      const legacyUpdateResult = await legacyUpdateQuery;
+      updatedProduct = legacyUpdateResult.data
+        ? withNullableOriginalPrice(legacyUpdateResult.data)
+        : legacyUpdateResult.data;
+      updateError = legacyUpdateResult.error;
     }
 
     if (updateError) {
@@ -196,7 +201,7 @@ export async function DELETE(
       (item) => item !== imageUrl,
     );
 
-    let updateQuery = supabaseServer
+    const updateQuery = supabaseServer
       .from("products")
       .update({ images: nextImages })
       .eq("id", id)
@@ -206,14 +211,18 @@ export async function DELETE(
     let { data: updatedProduct, error: updateError } = await updateQuery;
 
     if (hasMissingOriginalPriceColumn(updateError?.message)) {
-      updateQuery = supabaseServer
+      const legacyUpdateQuery = supabaseServer
         .from("products")
         .update({ images: nextImages })
         .eq("id", id)
         .select(LEGACY_PRODUCT_SELECT)
         .single();
 
-      ({ data: updatedProduct, error: updateError } = await updateQuery);
+      const legacyUpdateResult = await legacyUpdateQuery;
+      updatedProduct = legacyUpdateResult.data
+        ? withNullableOriginalPrice(legacyUpdateResult.data)
+        : legacyUpdateResult.data;
+      updateError = legacyUpdateResult.error;
     }
 
     if (updateError) {
@@ -246,7 +255,7 @@ export async function PATCH(
     const body = (await request.json()) as { images?: unknown };
     const images = normalizeImageList(body.images);
 
-    let updateQuery = supabaseServer
+    const updateQuery = supabaseServer
       .from("products")
       .update({ images })
       .eq("id", id)
@@ -256,14 +265,18 @@ export async function PATCH(
     let { data: updatedProduct, error: updateError } = await updateQuery;
 
     if (hasMissingOriginalPriceColumn(updateError?.message)) {
-      updateQuery = supabaseServer
+      const legacyUpdateQuery = supabaseServer
         .from("products")
         .update({ images })
         .eq("id", id)
         .select(LEGACY_PRODUCT_SELECT)
         .single();
 
-      ({ data: updatedProduct, error: updateError } = await updateQuery);
+      const legacyUpdateResult = await legacyUpdateQuery;
+      updatedProduct = legacyUpdateResult.data
+        ? withNullableOriginalPrice(legacyUpdateResult.data)
+        : legacyUpdateResult.data;
+      updateError = legacyUpdateResult.error;
     }
 
     if (updateError) {

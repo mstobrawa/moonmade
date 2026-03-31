@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import ProductsGrid from "../ui/ProductsGrid";
-import { supabaseServer as supabase } from "@/lib/supabase/server";
+import {
+  getSupabaseServer,
+  isSupabaseServerConfigured,
+} from "@/lib/supabase/server";
 
 type StoreProduct = {
   id: string;
@@ -31,6 +34,21 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function ProductPage() {
+  if (!isSupabaseServerConfigured()) {
+    return (
+      <main className="mx-auto w-full max-w-275 px-6 py-16">
+        <div className="rounded-[2rem] border border-moon-contrast/10 bg-white/70 p-8 text-center shadow-sm">
+          <h1 className="text-2xl text-moon-contrast">Produkty w przygotowaniu</h1>
+          <p className="mt-3 text-sm leading-7 text-moon-contrast/72">
+            Lokalna konfiguracja Supabase nie jest jeszcze ustawiona, dlatego
+            lista produktow jest chwilowo niedostepna.
+          </p>
+        </div>
+      </main>
+    );
+  }
+
+  const supabase = getSupabaseServer();
   const { data: products, error } = await supabase
     .from("products")
     .select("*")

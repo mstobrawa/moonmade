@@ -5,6 +5,7 @@ import {
   LEGACY_PRODUCT_SELECT,
   PRODUCT_SELECT,
   resequenceProducts,
+  withNullableOriginalPrice,
 } from "@/lib/admin/products";
 import { supabaseServer } from "@/lib/supabase/server";
 import { getAdminSessionFromRequest } from "@/lib/admin/auth";
@@ -86,7 +87,7 @@ export async function PATCH(
       );
     }
 
-    let updateQuery = supabaseServer
+    const updateQuery = supabaseServer
       .from("products")
       .update({
         title,
@@ -104,7 +105,7 @@ export async function PATCH(
     let { data, error } = await updateQuery;
 
     if (hasMissingOriginalPriceColumn(error?.message)) {
-      updateQuery = supabaseServer
+      const legacyUpdateQuery = supabaseServer
         .from("products")
         .update({
           title,
@@ -118,7 +119,11 @@ export async function PATCH(
         .select(LEGACY_PRODUCT_SELECT)
         .single();
 
-      ({ data, error } = await updateQuery);
+      const legacyUpdateResult = await legacyUpdateQuery;
+      data = legacyUpdateResult.data
+        ? withNullableOriginalPrice(legacyUpdateResult.data)
+        : legacyUpdateResult.data;
+      error = legacyUpdateResult.error;
     }
 
     if (error) {

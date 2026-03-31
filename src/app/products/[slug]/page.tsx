@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { supabaseServer as supabase } from "@/lib/supabase/server";
+import {
+  getSupabaseServer,
+  isSupabaseServerConfigured,
+} from "@/lib/supabase/server";
 import ProductDetailView from "./ProductDetailView";
 
 interface ProductPageProps {
@@ -10,6 +13,11 @@ interface ProductPageProps {
 }
 
 async function getProduct(slug: string) {
+  if (!isSupabaseServerConfigured()) {
+    return null;
+  }
+
+  const supabase = getSupabaseServer();
   const { data: product, error } = await supabase
     .from("products")
     .select("*")

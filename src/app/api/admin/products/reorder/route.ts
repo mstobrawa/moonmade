@@ -4,6 +4,7 @@ import {
   hasMissingOriginalPriceColumn,
   LEGACY_PRODUCT_SELECT,
   PRODUCT_SELECT,
+  withNullableOriginalPrice,
 } from "@/lib/admin/products";
 import { getAdminSessionFromRequest } from "@/lib/admin/auth";
 import { supabaseServer } from "@/lib/supabase/server";
@@ -133,7 +134,7 @@ async function handleReorder(request: NextRequest) {
       return NextResponse.json({ error: finalUpdateError.message }, { status: 500 });
     }
 
-    let selectQuery = supabaseServer
+    const selectQuery = supabaseServer
       .from("products")
       .select(PRODUCT_SELECT)
       .order("position", { ascending: true })
@@ -142,13 +143,17 @@ async function handleReorder(request: NextRequest) {
     let { data: reorderedProducts, error: selectError } = await selectQuery;
 
     if (hasMissingOriginalPriceColumn(selectError?.message)) {
-      selectQuery = supabaseServer
+      const legacySelectQuery = supabaseServer
         .from("products")
         .select(LEGACY_PRODUCT_SELECT)
         .order("position", { ascending: true })
         .order("created_at", { ascending: false });
 
-      ({ data: reorderedProducts, error: selectError } = await selectQuery);
+      const legacySelectResult = await legacySelectQuery;
+      reorderedProducts =
+        legacySelectResult.data?.map((product) => withNullableOriginalPrice(product)) ??
+        null;
+      selectError = legacySelectResult.error;
     }
 
     if (selectError) {
