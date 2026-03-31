@@ -13,6 +13,7 @@ import {
 
 export async function POST(request: NextRequest) {
   try {
+    const hostname = request.nextUrl.hostname;
     const { email, password } = await request.json();
 
     if (!email || !password) {
@@ -44,7 +45,7 @@ export async function POST(request: NextRequest) {
         { error: "To konto nie ma dostepu do panelu admina." },
         { status: 403 },
       );
-      clearAdminCookies(response);
+      clearAdminCookies(response, hostname);
       return response;
     }
 
@@ -56,14 +57,14 @@ export async function POST(request: NextRequest) {
     response.cookies.set(
       ADMIN_ACCESS_COOKIE,
       data.session.access_token,
-      getAdminCookieOptions(data.session.expires_in ?? 60 * 60),
+      getAdminCookieOptions(data.session.expires_in ?? 60 * 60, hostname),
     );
 
     if (data.session.refresh_token) {
       response.cookies.set(
         ADMIN_REFRESH_COOKIE,
         data.session.refresh_token,
-        getAdminCookieOptions(60 * 60 * 24 * 30),
+        getAdminCookieOptions(60 * 60 * 24 * 30, hostname),
       );
     }
 

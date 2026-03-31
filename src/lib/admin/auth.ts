@@ -26,13 +26,42 @@ export function isAdminEmail(email?: string | null) {
   return adminEmails.includes(email.toLowerCase());
 }
 
-export function getAdminCookieOptions(maxAge = 60 * 60) {
+export function getAdminCookieDomain(hostname?: string | null) {
+  const configuredDomain = process.env.ADMIN_COOKIE_DOMAIN?.trim();
+
+  if (configuredDomain) {
+    return configuredDomain;
+  }
+
+  const normalizedHostname = hostname?.trim().toLowerCase();
+
+  if (!normalizedHostname) {
+    return undefined;
+  }
+
+  if (
+    normalizedHostname === "moonmade.pl" ||
+    normalizedHostname.endsWith(".moonmade.pl")
+  ) {
+    return "moonmade.pl";
+  }
+
+  return undefined;
+}
+
+export function getAdminCookieOptions(
+  maxAge = 60 * 60,
+  hostname?: string | null,
+) {
+  const domain = getAdminCookieDomain(hostname);
+
   return {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax" as const,
     path: "/",
     maxAge,
+    ...(domain ? { domain } : {}),
   };
 }
 
@@ -109,7 +138,7 @@ export function clearAdminCookies(response: {
       options: ReturnType<typeof getAdminCookieOptions>,
     ) => void;
   };
-}) {
-  response.cookies.set(ADMIN_ACCESS_COOKIE, "", getAdminCookieOptions(0));
-  response.cookies.set(ADMIN_REFRESH_COOKIE, "", getAdminCookieOptions(0));
+}, hostname?: string | null) {
+  response.cookies.set(ADMIN_ACCESS_COOKIE, "", getAdminCookieOptions(0, hostname));
+  response.cookies.set(ADMIN_REFRESH_COOKIE, "", getAdminCookieOptions(0, hostname));
 }
