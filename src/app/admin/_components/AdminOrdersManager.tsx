@@ -55,7 +55,7 @@ export default function AdminOrdersManager({
     setBusyId(null);
 
     if (!response.ok || !data.order) {
-      setError(data.error ?? "Nie udalo sie zapisac statusu.");
+      setError(data.error ?? "Nie udało się zapisać statusu.");
       return;
     }
 
@@ -68,12 +68,12 @@ export default function AdminOrdersManager({
     <div className="space-y-6">
       <div className="space-y-2">
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-moon-rose-dark">
-          Zamowienia
+          Zamówienia
         </p>
-        <h2 className="text-3xl text-moon-contrast">Obsluga zamowien</h2>
+        <h2 className="text-3xl text-moon-contrast">Obsługa zamówień</h2>
         <p className="max-w-2xl text-sm leading-7 text-moon-contrast/72">
-          Tu mozesz podejrzec szczegoly zamowien i recznie aktualizowac ich status.
-          Statystyki i bardziej rozbudowany workflow dolozymy pozniej.
+          Tu możesz podejrzeć szczegóły zamówień i ręcznie aktualizować ich
+          status. Statystyki i bardziej rozbudowany workflow dołożymy później.
         </p>
       </div>
 
@@ -89,7 +89,7 @@ export default function AdminOrdersManager({
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-3">
                   <h3 className="text-xl text-moon-contrast">
-                    Zamowienie #{order.id.slice(0, 8)}
+                    Zamówienie #{order.id.slice(0, 8)}
                   </h3>
                   <span className="rounded-full bg-moon-contrast/8 px-3 py-1 text-xs uppercase tracking-[0.12em] text-moon-contrast/70">
                     {order.status}
@@ -100,9 +100,9 @@ export default function AdminOrdersManager({
                   <p>Klient: {order.customer_name ?? "-"}</p>
                   <p>Email: {order.email ?? "-"}</p>
                   <p>Telefon: {order.phone ?? "-"}</p>
-                  <p>Wysylka: {order.shipping_method ?? "-"}</p>
-                  <p>Suma: {order.total} zl</p>
-                  <p>Koszt dostawy: {order.shipping_cost ?? 0} zl</p>
+                  <p>Wysyłka: {order.shipping_method ?? "-"}</p>
+                  <p>Suma: {order.total} zł</p>
+                  <p>Koszt dostawy: {order.shipping_cost ?? 0} zł</p>
                 </div>
 
                 <div>
@@ -115,7 +115,7 @@ export default function AdminOrdersManager({
                         key={`${order.id}-${item.id}`}
                         className="rounded-xl border border-moon-contrast/8 bg-[#faf6f1] px-4 py-3 text-sm text-moon-contrast/78"
                       >
-                        {item.title} - {item.price} zl
+                        {item.title} - {item.price} zł
                       </div>
                     ))}
                   </div>
@@ -144,8 +144,18 @@ export default function AdminOrdersManager({
                 </div>
 
                 <div className="space-y-2 text-sm text-moon-contrast/68">
-                  <p>Data: {order.created_at ? new Date(order.created_at).toLocaleString("pl-PL") : "-"}</p>
-                  <p>Oplacone: {order.paid_at ? new Date(order.paid_at).toLocaleString("pl-PL") : "nie"}</p>
+                  <p>
+                    Data:{" "}
+                    {order.created_at
+                      ? new Date(order.created_at).toLocaleString("pl-PL")
+                      : "-"}
+                  </p>
+                  <p>
+                    Opłacone:{" "}
+                    {order.paid_at
+                      ? new Date(order.paid_at).toLocaleString("pl-PL")
+                      : "nie"}
+                  </p>
                   <p>Adres: {order.address ? JSON.stringify(order.address) : "-"}</p>
                 </div>
               </div>

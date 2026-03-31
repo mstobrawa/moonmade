@@ -1,11 +1,29 @@
 import { supabaseServer } from "@/lib/supabase/server";
+import {
+  hasMissingOriginalPriceColumn,
+  LEGACY_PRODUCT_SELECT,
+  PRODUCT_SELECT,
+} from "@/lib/admin/products";
 import AdminProductsManager from "../../_components/AdminProductsManager";
 
 export default async function AdminProductsPage() {
-  const { data: products, error } = await supabaseServer
+  let query = supabaseServer
     .from("products")
-    .select("id, slug, title, description, price, images, is_available, created_at")
+    .select(PRODUCT_SELECT)
+    .order("position", { ascending: true })
     .order("created_at", { ascending: false });
+
+  let { data: products, error } = await query;
+
+  if (hasMissingOriginalPriceColumn(error?.message)) {
+    query = supabaseServer
+      .from("products")
+      .select(LEGACY_PRODUCT_SELECT)
+      .order("position", { ascending: true })
+      .order("created_at", { ascending: false });
+
+    ({ data: products, error } = await query);
+  }
 
   if (error) {
     throw new Error(error.message);

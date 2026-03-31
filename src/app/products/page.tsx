@@ -7,8 +7,10 @@ type StoreProduct = {
   slug: string;
   title: string;
   price: number;
+  originalPrice: number | null;
   description: string;
   images: string[];
+  available: boolean;
 };
 
 export const metadata: Metadata = {
@@ -32,13 +34,13 @@ export default async function ProductPage() {
   const { data: products, error } = await supabase
     .from("products")
     .select("*")
-    .eq("is_available", true)
+    .order("position", { ascending: true })
     .order("created_at", { ascending: false });
 
   if (error) {
     return (
       <main className="p-4">
-        <p>Blad ladowania produktow</p>
+        <p>Błąd ładowania produktów</p>
       </main>
     );
   }
@@ -48,12 +50,17 @@ export default async function ProductPage() {
     slug: String(product.slug),
     title: String(product.title),
     price: Number(product.price),
+    originalPrice:
+      product.original_price === null || product.original_price === undefined
+        ? null
+        : Number(product.original_price),
     description: String(product.description ?? ""),
     images: Array.isArray(product.images)
       ? product.images.filter(
           (image: unknown): image is string => typeof image === "string",
         )
       : [],
+    available: Boolean(product.is_available),
   }));
 
   return (

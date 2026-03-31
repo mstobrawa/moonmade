@@ -6,7 +6,15 @@ export default function FooterBottom() {
       </p>
 
       <p className="text-[10px] tracking-[0.18em] text-[#FAF9F6]/70">
-        crafted by Mike Webworks
+        crafted by{" "}
+        <a
+          href="https://mikewebworks.dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline hover:text-white transition"
+        >
+          Mike Webworks
+        </a>
       </p>
     </div>
   );

@@ -111,6 +111,12 @@ export default function PolitykaPrywatnosciPage() {
         prawidłowego działania strony.
       </p>
       <p>
+        Pliki cookies mogą być również wykorzystywane do utrzymania sesji
+        użytkownika oraz zapewnienia prawidłowego działania usług technicznych,
+        w tym usług dostarczanych przez zewnętrznych dostawców (np. systemu
+        uwierzytelniania).
+      </p>
+      <p>
         Pliki cookies nie są wykorzystywane do celów marketingowych ani
         analitycznych.
       </p>

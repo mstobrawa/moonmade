@@ -11,6 +11,7 @@ export default function RegulaminPage() {
         – Prawo przedsiębiorców, działającą pod marką <strong>Moonmade</strong>{" "}
         (dalej: „Sprzedawca”).
       </p>
+
       <p>
         Dane kontaktowe Sprzedawcy:
         <br />
@@ -21,6 +22,7 @@ export default function RegulaminPage() {
         <br />
         adres e-mail: <strong>kontakt@moonmade.pl</strong>
       </p>
+
       <p>
         Sklep prowadzi sprzedaż wyłącznie na terytorium Rzeczypospolitej
         Polskiej.
@@ -49,8 +51,13 @@ export default function RegulaminPage() {
       </p>
       <p>Złożenie zamówienia oznacza akceptację niniejszego Regulaminu.</p>
       <p>
-        Umowa sprzedaży zostaje zawarta w momencie potwierdzenia zamówienia
-        przez Sprzedawcę.
+        Po złożeniu zamówienia Klient otrzymuje potwierdzenie jego przyjęcia na
+        podany adres e-mail.
+      </p>
+      <p>
+        Umowa sprzedaży zostaje zawarta z chwilą otrzymania przez Klienta
+        potwierdzenia przyjęcia zamówienia do realizacji, przesłanego drogą
+        elektroniczną.
       </p>
       <p>
         W przypadku produktów wykonywanych na indywidualne zamówienie szczegóły
@@ -58,14 +65,16 @@ export default function RegulaminPage() {
       </p>
 
       <h2>§4 Ceny i płatności</h2>
+      <p>Ceny produktów podane są w złotych polskich (PLN).</p>
       <p>
-        Ceny produktów podane są w złotych polskich (PLN) i stanowią ceny
-        brutto.
+        Sprzedawca prowadzi działalność nierejestrowaną, w związku z czym ceny
+        produktów nie zawierają podatku VAT (zwolnienie na podstawie
+        obowiązujących przepisów prawa).
       </p>
       <p>Ceny nie obejmują kosztów dostawy, o ile nie zaznaczono inaczej.</p>
       <p>
         Sprzedawca może okresowo oferować rabaty dotyczące całkowitej wartości
-        zamówienia (rabaty koszykowe).
+        zamówienia.
       </p>
       <p>Płatność realizowana jest online po złożeniu zamówienia.</p>
       <p>
@@ -79,6 +88,11 @@ export default function RegulaminPage() {
       <p>
         Podmiotem świadczącym obsługę płatności online jest{" "}
         <strong>Autopay S.A.</strong>
+      </p>
+      <p>
+        Sprzedawca nie ponosi odpowiedzialności za problemy techniczne lub
+        przerwy w działaniu systemu płatności, za które odpowiada operator
+        płatności.
       </p>
 
       <h2>§5 Dostawa i realizacja zamówień</h2>
@@ -114,8 +128,7 @@ export default function RegulaminPage() {
       <p>
         Zwrot środków następuje w terminie do 14 dni od otrzymania zwróconego
         produktu, przy użyciu tej samej metody płatności, jakiej użył Konsument,
-        chyba że Konsument wyraźnie zgodzi się na inny sposób zwrotu, który nie
-        wiąże się dla niego z żadnymi kosztami.
+        chyba że Konsument wyraźnie zgodzi się na inny sposób zwrotu.
       </p>
       <p>
         Prawo odstąpienia od umowy nie przysługuje w przypadku produktów
@@ -161,7 +174,19 @@ export default function RegulaminPage() {
         się w Polityce Prywatności dostępnej na stronie sklepu.
       </p>
 
-      <h2>§10 Postanowienia końcowe</h2>
+      <h2>§10 Informacja o obniżkach cen (Dyrektywa Omnibus)</h2>
+      <p>
+        W przypadku ogłoszenia obniżki ceny produktu, Sprzedawca informuje o
+        najniższej cenie tego produktu, jaka obowiązywała w okresie 30 dni przed
+        wprowadzeniem obniżki.
+      </p>
+      <p>
+        W przypadku produktów oferowanych do sprzedaży krócej niż 30 dni,
+        podawana jest najniższa cena obowiązująca od dnia rozpoczęcia sprzedaży
+        do dnia wprowadzenia obniżki.
+      </p>
+
+      <h2>§11 Postanowienia końcowe</h2>
       <p>Regulamin obowiązuje od dnia opublikowania na stronie sklepu.</p>
       <p>
         W sprawach nieuregulowanych niniejszym Regulaminem zastosowanie mają

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 
 interface ProductGalleryProps {
@@ -11,15 +11,28 @@ interface ProductGalleryProps {
 const PLACEHOLDER = "/placeholder.webp";
 
 export default function ProductGallery({ images, title }: ProductGalleryProps) {
-  const safeImages =
-    Array.isArray(images) && images.length > 0 ? images : [PLACEHOLDER];
+  const galleryImages = useMemo(() => {
+    const safeImages =
+      Array.isArray(images) && images.length > 0
+        ? images.filter(
+            (image): image is string =>
+              typeof image === "string" && image.trim().length > 0,
+          )
+        : [];
+
+    return safeImages.length > 0 ? safeImages : [PLACEHOLDER];
+  }, [images]);
 
   const safeTitle =
     typeof title === "string" && title.trim().length > 0
       ? title
       : "Produkt Moonmade";
 
-  const [activeImage, setActiveImage] = useState<string>(safeImages[0]);
+  const [activeImage, setActiveImage] = useState<string>(galleryImages[0]);
+
+  useEffect(() => {
+    setActiveImage(galleryImages[0]);
+  }, [galleryImages]);
 
   return (
     <div className="space-y-2.5 md:max-w-[22rem]">
@@ -31,13 +44,12 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
           priority
           className="object-cover transition-transform duration-700 ease-out hover:scale-[1.03]"
           sizes="(max-width: 768px) 100vw, 50vw"
-          onError={() => setActiveImage(PLACEHOLDER)}
         />
       </div>
 
-      {safeImages.length > 1 && (
+      {galleryImages.length > 1 && (
         <div className="flex justify-center gap-2 md:justify-start">
-          {safeImages.map((img, index) => (
+          {galleryImages.map((img, index) => (
             <button
               key={`${img}-${index}`}
               type="button"
@@ -47,11 +59,11 @@ export default function ProductGallery({ images, title }: ProductGalleryProps) {
                   ? "border-moon-rose bg-moon-white/70 -translate-y-0.5"
                   : "border-[#e7ddd6] bg-[#f6f1ed] hover:-translate-y-0.5 hover:border-moon-rose-light"
               }`}
-              aria-label={`Pokaz zdjecie ${index + 1}`}
+              aria-label={`Pokaż zdjęcie ${index + 1}`}
             >
               <Image
                 src={img}
-                alt={`${safeTitle} - zdjecie ${index + 1}`}
+                alt={`${safeTitle} - zdjęcie ${index + 1}`}
                 fill
                 className="object-cover"
                 sizes="80px"

@@ -14,7 +14,6 @@ async function getProduct(slug: string) {
     .from("products")
     .select("*")
     .eq("slug", slug)
-    .eq("is_available", true)
     .single();
 
   if (error || !product) {
@@ -96,7 +95,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
       "@type": "Offer",
       priceCurrency: "PLN",
       price: Number(product.price),
-      availability: "https://schema.org/InStock",
+      availability: product.is_available
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
       url: `/products/${product.slug}`,
     },
     brand: {

@@ -9,6 +9,7 @@ interface AddToCartButtonProps {
     title: string;
     price: number;
     image: string;
+    available?: boolean;
   };
 }
 
@@ -16,9 +17,11 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
   const { state, dispatch } = useCart();
 
   const isInCart = state.items.some((item) => item.id === product.id);
+  const isSoldOut = product.available === false;
+  const isDisabled = isInCart || isSoldOut;
 
   const handleAddToCart = () => {
-    if (isInCart) return;
+    if (isDisabled) return;
 
     dispatch({
       type: "ADD_ITEM",
@@ -34,11 +37,13 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
   return (
     <Button
       onClick={handleAddToCart}
-      disabled={isInCart}
-      className="w-full shadow-[0_12px_26px_rgba(138,110,108,0.14)]"
+      disabled={isDisabled}
+      className={`w-full shadow-[0_12px_26px_rgba(138,110,108,0.14)] ${
+        isSoldOut ? "cursor-not-allowed opacity-60" : ""
+      }`}
       size="sm"
     >
-      {isInCart ? "Dodano do koszyka" : "Dodaj do koszyka"}
+      {isSoldOut ? "Wyprzedane" : isInCart ? "Dodano do koszyka" : "Dodaj do koszyka"}
     </Button>
   );
 }

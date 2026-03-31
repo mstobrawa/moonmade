@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import {
+  hasMissingOriginalPriceColumn,
+  LEGACY_PRODUCT_SELECT,
+  PRODUCT_SELECT,
+} from "@/lib/admin/products";
 import { supabaseServer } from "@/lib/supabase/server";
 import { getAdminSessionFromRequest } from "@/lib/admin/auth";
 
@@ -104,12 +109,25 @@ export async function POST(
       ...uploadedUrls,
     ];
 
-    const { data: updatedProduct, error: updateError } = await supabaseServer
+    let updateQuery = supabaseServer
       .from("products")
       .update({ images: nextImages })
       .eq("id", id)
-      .select("id, slug, title, description, price, images, is_available, created_at")
+      .select(PRODUCT_SELECT)
       .single();
+
+    let { data: updatedProduct, error: updateError } = await updateQuery;
+
+    if (hasMissingOriginalPriceColumn(updateError?.message)) {
+      updateQuery = supabaseServer
+        .from("products")
+        .update({ images: nextImages })
+        .eq("id", id)
+        .select(LEGACY_PRODUCT_SELECT)
+        .single();
+
+      ({ data: updatedProduct, error: updateError } = await updateQuery);
+    }
 
     if (updateError) {
       return NextResponse.json({ error: updateError.message }, { status: 500 });
@@ -178,12 +196,25 @@ export async function DELETE(
       (item) => item !== imageUrl,
     );
 
-    const { data: updatedProduct, error: updateError } = await supabaseServer
+    let updateQuery = supabaseServer
       .from("products")
       .update({ images: nextImages })
       .eq("id", id)
-      .select("id, slug, title, description, price, images, is_available, created_at")
+      .select(PRODUCT_SELECT)
       .single();
+
+    let { data: updatedProduct, error: updateError } = await updateQuery;
+
+    if (hasMissingOriginalPriceColumn(updateError?.message)) {
+      updateQuery = supabaseServer
+        .from("products")
+        .update({ images: nextImages })
+        .eq("id", id)
+        .select(LEGACY_PRODUCT_SELECT)
+        .single();
+
+      ({ data: updatedProduct, error: updateError } = await updateQuery);
+    }
 
     if (updateError) {
       return NextResponse.json({ error: updateError.message }, { status: 500 });
@@ -215,12 +246,25 @@ export async function PATCH(
     const body = (await request.json()) as { images?: unknown };
     const images = normalizeImageList(body.images);
 
-    const { data: updatedProduct, error: updateError } = await supabaseServer
+    let updateQuery = supabaseServer
       .from("products")
       .update({ images })
       .eq("id", id)
-      .select("id, slug, title, description, price, images, is_available, created_at")
+      .select(PRODUCT_SELECT)
       .single();
+
+    let { data: updatedProduct, error: updateError } = await updateQuery;
+
+    if (hasMissingOriginalPriceColumn(updateError?.message)) {
+      updateQuery = supabaseServer
+        .from("products")
+        .update({ images })
+        .eq("id", id)
+        .select(LEGACY_PRODUCT_SELECT)
+        .single();
+
+      ({ data: updatedProduct, error: updateError } = await updateQuery);
+    }
 
     if (updateError) {
       return NextResponse.json({ error: updateError.message }, { status: 500 });

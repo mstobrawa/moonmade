@@ -1,7 +1,9 @@
 import { supabaseServer } from "@/lib/supabase/server";
 
 async function getCount(table: "products" | "orders", filter?: [string, unknown]) {
-  let query = supabaseServer.from(table).select("*", { count: "exact", head: true });
+  let query = supabaseServer
+    .from(table)
+    .select("*", { count: "exact", head: true });
 
   if (filter) {
     query = query.eq(filter[0], filter[1]);
@@ -17,15 +19,15 @@ const stats = [
     key: "products",
   },
   {
-    label: "Dostepne produkty",
+    label: "Dostępne produkty",
     key: "availableProducts",
   },
   {
-    label: "Wszystkie zamowienia",
+    label: "Wszystkie zamówienia",
     key: "orders",
   },
   {
-    label: "Nowe zamowienia",
+    label: "Nowe zamówienia",
     key: "newOrders",
   },
 ] as const;
@@ -51,12 +53,11 @@ export default async function AdminDashboardPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-moon-rose-dark">
           Start
         </p>
-        <h2 className="text-3xl text-moon-contrast">Przeglad sklepu</h2>
+        <h2 className="text-3xl text-moon-contrast">Przegląd sklepu</h2>
         <p className="mt-2 max-w-2xl text-sm leading-7 text-moon-contrast/72">
-          To jest osobna czesc administracyjna pod przyszle
-          {" "}
-          <span className="font-semibold">admin.moonmade.pl</span>.
-          Masz tu gotowy start pod produkty, zamowienia i kolejne statystyki.
+          To jest osobna część administracyjna pod przyszłe{" "}
+          <span className="font-semibold">admin.moonmade.pl</span>. Masz tu
+          gotowy start pod produkty, zamówienia i kolejne statystyki.
         </p>
       </div>
 
@@ -67,9 +68,7 @@ export default async function AdminDashboardPage() {
             className="rounded-[1.5rem] border border-moon-contrast/10 bg-[linear-gradient(135deg,rgba(250,246,241,0.9),rgba(242,225,214,0.72))] p-5 shadow-sm"
           >
             <p className="text-sm text-moon-contrast/68">{stat.label}</p>
-            <p className="mt-3 text-4xl text-moon-contrast">
-              {values[stat.key]}
-            </p>
+            <p className="mt-3 text-4xl text-moon-contrast">{values[stat.key]}</p>
           </div>
         ))}
       </div>

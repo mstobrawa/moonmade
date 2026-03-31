@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import {
+  getNextProductPosition,
+  hasMissingOriginalPriceColumn,
+  LEGACY_PRODUCT_SELECT,
+  PRODUCT_SELECT,
+} from "@/lib/admin/products";
 import { supabaseServer } from "@/lib/supabase/server";
 import { getAdminSessionFromRequest } from "@/lib/admin/auth";
 
@@ -25,6 +31,17 @@ function normalizeImages(value: string | string[] | undefined) {
     .filter(Boolean);
 }
 
+function normalizeOptionalPrice(value: unknown) {
+  const normalizedValue = String(value ?? "").trim();
+
+  if (!normalizedValue) {
+    return null;
+  }
+
+  const parsedValue = Number(normalizedValue);
+  return Number.isNaN(parsedValue) ? Number.NaN : parsedValue;
+}
+
 export async function POST(request: NextRequest) {
   const session = await getAdminSessionFromRequest(request);
 
@@ -38,28 +55,52 @@ export async function POST(request: NextRequest) {
     const description = String(body.description ?? "").trim();
     const slug = slugify(String(body.slug ?? title));
     const price = Number(body.price ?? 0);
+    const originalPrice = normalizeOptionalPrice(body.originalPrice);
     const images = normalizeImages(body.images);
     const isAvailable = Boolean(body.isAvailable);
+    const position = await getNextProductPosition();
 
-    if (!title || !slug || Number.isNaN(price)) {
+    if (!title || !slug || Number.isNaN(price) || Number.isNaN(originalPrice)) {
       return NextResponse.json(
         { error: "Tytul, slug i cena sa wymagane." },
         { status: 400 },
       );
     }
 
-    const { data, error } = await supabaseServer
+    let insertQuery = supabaseServer
       .from("products")
       .insert({
         title,
         slug,
         description,
         price,
+        original_price: originalPrice,
         images,
         is_available: isAvailable,
+        position,
       })
-      .select("id, slug, title, description, price, images, is_available, created_at")
+      .select(PRODUCT_SELECT)
       .single();
+
+    let { data, error } = await insertQuery;
+
+    if (hasMissingOriginalPriceColumn(error?.message)) {
+      insertQuery = supabaseServer
+        .from("products")
+        .insert({
+          title,
+          slug,
+          description,
+          price,
+          images,
+          is_available: isAvailable,
+          position,
+        })
+        .select(LEGACY_PRODUCT_SELECT)
+        .single();
+
+      ({ data, error } = await insertQuery);
+    }
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
