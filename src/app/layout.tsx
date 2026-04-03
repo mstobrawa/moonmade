@@ -3,6 +3,7 @@ import "./globals.css";
 import { playfair, montserrat } from "@/app/ui/fonts";
 import { CartProvider } from "./(store)/cart/CartContext";
 import AppShell from "./AppShell";
+import TestRibbon from "./ui/TestRibbon";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://moonmade.pl";
@@ -64,6 +65,7 @@ export default function RootLayout({
         className={`${playfair.variable} ${montserrat.variable} flex min-h-screen flex-col bg-moon-cream text-moon-contrast antialiased`}
       >
         <CartProvider>
+          <TestRibbon />
           <AppShell>{children}</AppShell>
         </CartProvider>
       </body>

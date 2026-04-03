@@ -25,8 +25,18 @@ export default function PaymentSuccessPage({ searchParams }: SuccessPageProps) {
         </h1>
 
         <p className="text-base leading-8 text-moon-contrast/74">
-          Twoje zamówienie zostało przyjęte do realizacji.
+          Dziękujemy za przetestowanie procesu zamówienia.
         </p>
+
+        <div className="rounded-[1.75rem] border border-moon-contrast/10 bg-moon-white/60 px-5 py-4 text-left shadow-[0_14px_32px_rgba(47,42,40,0.06)] backdrop-blur-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-moon-contrast/72">
+            Wersja testowa
+          </p>
+          <p className="pt-2 text-sm leading-7 text-moon-contrast/78 sm:text-base">
+            Sklep działa obecnie w trybie testowym. Zamówienia nie są
+            realizowane, a płatności są w trakcie wdrażania.
+          </p>
+        </div>
 
         {orderId && (
           <p className="text-xs text-moon-contrast">

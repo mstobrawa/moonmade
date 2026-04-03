@@ -32,7 +32,7 @@ export default function MenuItem({
       {label}
       <span
         aria-hidden
-        className={`absolute inset-x-0 -bottom-[2px] h-[1px] origin-center rounded-full bg-moon-rose transition-transform duration-300 ease-out ${
+        className={`absolute inset-x-0 -bottom-0.5 h-px origin-center rounded-full bg-moon-rose transition-transform duration-300 ease-out ${
           isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
         }`}
       />
