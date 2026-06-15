@@ -28,18 +28,18 @@ This project was created to explore real-world e-commerce architecture using Nex
 <table width="100%">
   <thead>
     <tr>
-      <th width="33%" align="center">🛒 Product Catalog</th>
-      <th width="33%" align="center">💳 Checkout Flow</th>
+      <th width="33%" align="center">🛒 Home Page</th>
+      <th width="33%" align="center">💳 Product preview</th>
       <th width="33%" align="center">💼 Admin Panel</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td valign="top">
-        <img src="https://github.com/user-attachments/assets/89fdbb98-7c24-41ab-b572-82af690a03fe" width="100%" alt="Catalog preview" />
+        <img src="https://github.com/user-attachments/assets/89fdbb98-7c24-41ab-b572-82af690a03fe" width="100%" alt="Home Page" />
       </td>
       <td valign="top">
-        <img src="https://github.com/user-attachments/assets/036acdc3-ceaa-40c1-987c-702b45cb8ef7" width="100%" alt="Checkout preview" />
+        <img src="https://github.com/user-attachments/assets/036acdc3-ceaa-40c1-987c-702b45cb8ef7" width="100%" alt="Product preview" />
       </td>
       <td valign="top">
         <img src="https://github.com/user-attachments/assets/eb84f442-f223-466f-98a2-090b63b4db19" width="100%" alt="Admin panel preview" />
