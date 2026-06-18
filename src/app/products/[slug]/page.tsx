@@ -115,7 +115,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   };
 
   return (
-    <main className="min-h-screen bg-moon-cream px-6 py-8 md:py-8">
+    <main className="store-page-spacing bg-moon-cream px-6">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}

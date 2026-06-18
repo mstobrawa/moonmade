@@ -16,7 +16,7 @@ export default function PaymentSuccessPage({ searchParams }: SuccessPageProps) {
   const orderId = searchParams.order;
 
   return (
-    <main className="flex min-h-[70vh] items-center justify-center px-6">
+    <main className="store-page-spacing flex items-start justify-center px-6">
       <HeroCard className="max-w-3xl text-center">
         <ClearCartClient />
 

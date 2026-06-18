@@ -4,7 +4,7 @@ import HeroCard from "../ui/HeroCard";
 
 export default function SignInUpPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center p-6">
+    <main className="store-page-spacing flex items-start justify-center px-6">
       <div className="w-full max-w-5xl">
         <HeroCard className="mb-8">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-moon-rose-dark">

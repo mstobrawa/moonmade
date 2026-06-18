@@ -70,7 +70,7 @@ export default function CartPage() {
 
   if (state.items.length === 0) {
     return (
-      <main className="flex min-h-[60vh] items-center justify-center px-6 py-12">
+      <main className="store-page-spacing flex items-start justify-center px-6">
         <HeroCard className="text-center">
           <h1 className="mb-4 text-4xl font-semibold tracking-tight text-moon-contrast">
             Twój koszyk jest pusty
@@ -90,7 +90,7 @@ export default function CartPage() {
   }
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-6xl px-6 py-12 text-moon-contrast md:px-8 md:py-16">
+    <main className="store-page-spacing mx-auto max-w-6xl px-6 text-moon-contrast md:px-8">
       <HeroCard className="mb-10 max-w-none">
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-moon-rose-dark">
           Moonmade Cart

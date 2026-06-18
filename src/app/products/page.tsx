@@ -36,7 +36,7 @@ export const revalidate = 60;
 export default async function ProductPage() {
   if (!isSupabaseServerConfigured()) {
     return (
-      <main className="mx-auto w-full max-w-275 px-6 py-16">
+      <main className="store-page-spacing mx-auto max-w-275 px-6">
         <div className="rounded-[2rem] border border-moon-contrast/10 bg-white/70 p-8 text-center shadow-sm">
           <h1 className="text-2xl text-moon-contrast">Produkty w przygotowaniu</h1>
           <p className="mt-3 text-sm leading-7 text-moon-contrast/72">
@@ -57,7 +57,7 @@ export default async function ProductPage() {
 
   if (error) {
     return (
-      <main className="p-4">
+      <main className="store-page-spacing mx-auto max-w-275 px-6">
         <p>Błąd ładowania produktów</p>
       </main>
     );
@@ -82,7 +82,7 @@ export default async function ProductPage() {
   }));
 
   return (
-    <main className="mx-auto w-full max-w-275 px-6 py-4">
+    <main className="store-page-spacing mx-auto max-w-275 px-6">
       <header className="sr-only">
         <h1>Produkty Moonmade</h1>
         <p>

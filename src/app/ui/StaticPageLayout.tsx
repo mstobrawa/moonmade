@@ -10,7 +10,7 @@ export default function StaticPageLayout({
   children,
 }: StaticPageLayoutProps) {
   return (
-    <main className="min-h-screen px-4 py-12 text-moon-contrast md:px-6 md:py-16">
+    <main className="store-page-spacing px-4 text-moon-contrast md:px-6">
       <HeroCard>
         <p className="moon-nav-text mb-3 text-[0.72rem] text-moon-rose-dark/80">
           Moonmade

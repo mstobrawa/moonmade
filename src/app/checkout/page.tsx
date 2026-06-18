@@ -31,12 +31,14 @@ export default function CheckoutPage() {
   });
 
   if (!isHydrated) {
-    return <main className="p-6 text-center">Ładowanie...</main>;
+    return (
+      <main className="store-page-spacing px-6 text-center">Ładowanie...</main>
+    );
   }
 
   if (state.items.length === 0) {
     return (
-      <main className="flex min-h-[60vh] items-center justify-center px-6 py-12">
+      <main className="store-page-spacing flex items-start justify-center px-6">
         <HeroCard className="text-center">
           <h1 className="mb-4 text-4xl font-semibold tracking-tight">
             Twój koszyk jest pusty
@@ -127,7 +129,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <main className="mx-auto max-w-5xl space-y-10 px-6 py-12 md:px-8 md:py-16">
+    <main className="store-page-spacing mx-auto max-w-5xl space-y-10 px-6 md:px-8">
       <HeroCard>
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-moon-rose-dark">
           Moonmade Checkout
